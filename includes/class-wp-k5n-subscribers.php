@@ -34,7 +34,7 @@ class WP_K5N_Subscriptions {
     public function __construct() {
         global $wpdb, $table_prefix;
 
-        $this->date = WP_SMS_CURRENT_DATE;
+        $this->date = WP_K5N_CURRENT_DATE;
         $this->db = $wpdb;
         $this->tb_prefix = $table_prefix;
     }

@@ -32,7 +32,7 @@ class WP_K5N_Subscribers_List_Table extends WP_List_Table {
                 return wps_get_group_by_id($item[$column_name]);
 
             case 'date':
-                return sprintf(__('%s <span class="wpk5n-time">Time: %s</span>', 'wp-k5n'), date_i18n('Y-m-d', strtotime($item[$column_name])), date_i18n('H:i:s', strtotime($item[$column_name])));
+                return sprintf(__('%s <span class="wpk5n-time">Czas: %s</span>', 'wp-k5n'), date_i18n('Y-m-d', strtotime($item[$column_name])), date_i18n('H:i:s', strtotime($item[$column_name])));
 
             case 'status':
                 return ( $item[$column_name] == '1' ? '<span class="dashicons dashicons-yes wpk5n-color-green"></span>' : '<span class="dashicons dashicons-no-alt wpk5n-color-red"></span>' );
