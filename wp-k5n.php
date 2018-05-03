@@ -68,6 +68,19 @@ class WP_K5N_Plugin {
      * @var string
      */
     protected $options;
+
+    /**
+     * WP K5N subscribe object
+     *
+     * @var string
+     */
+    public $subscribe;
+
+    /**
+     * Settings
+     *
+     * @var string
+     */
     public $setting_page;
 
     /**
@@ -97,8 +110,21 @@ class WP_K5N_Plugin {
 
         add_action('admin_enqueue_scripts', array($this, 'admin_assets'));
         add_action('wp_enqueue_scripts', array($this, 'front_assets'));
+        add_filter('plugin_row_meta', array($this, 'meta_links'), 0, 2);
 
         add_action('admin_menu', array($this, 'admin_menu'));
+    }
+
+    public function meta_links($links, $file) {
+        if ($file == 'wp-k5n/wp-k5n.php') {
+            $rate_url = 'http://wordpress.org/support/view/plugin-reviews/wp-k5n?rate=5#postform';
+            $links[] = '<a href="' . $rate_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Rate this plugin', 'wp-k5n') . '</a>';
+
+            $newsletter_url = WP_K5N_SITE . '/newsletter';
+            $links[] = '<a href="' . $newsletter_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Subscribe to our Phone Newsletter', 'wp-k5n') . '</a>';
+        }
+
+        return $links;
     }
 
     /**
@@ -140,6 +166,7 @@ class WP_K5N_Plugin {
         $role = get_role('administrator');
 
         $role->add_cap('wpk5n_setting');
+        $role->add_cap('wpk5n_subscribe_groups');
     }
 
     /**
@@ -202,15 +229,15 @@ class WP_K5N_Plugin {
      * @param  Not param
      */
     public function admin_menu() {
-        add_menu_page(__('K5N', 'wp-k5n'), __('K5N', 'wp-sms'), 'wpk5n_setting', 'wp-k5n', array(
+        add_menu_page(__('K5N', 'wp-k5n'), __('K5N', 'wp-k5n'), 'wpk5n_setting', 'wp-k5n', array(
             &$this->setting_page,
             'render_settings'
                 ), 'dashicons-groups');
 
-//        add_submenu_page('wp-k5n', __('Ustawienia', 'wp-k5n'), __('Ustawienia', 'wp-k5n'), 'wpk5n_setting', 'wp-k5n-settings', array(
-//            &$this->setting_page,
-//            'render_settings'
-//        ));
+        add_submenu_page('wp-k5n', __('Grupy subskrybentów', 'wp-k5n'), __('Grupy subskrybentów', 'wp-k5n'), 'wpk5n_subscribe_groups', 'wp-k5n-subscribers-group', array(
+            $this,
+            'groups_page'
+        ));
     }
 
     /**
@@ -249,7 +276,7 @@ class WP_K5N_Plugin {
         include_once dirname(__FILE__) . '/includes/class-wp-k5n-groups-table.php';
 
         //Create an instance of our package class...
-        $list_table = new WP_SMS_Subscribers_Groups_List_Table();
+        $list_table = new WP_K5N_Subscribers_Groups_List_Table();
 
         //Fetch, prepare, sort, and filter our data...
         $list_table->prepare_items();

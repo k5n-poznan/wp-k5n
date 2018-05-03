@@ -12,7 +12,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a href="admin.php?page=wp-k5n-subscribers-group" class="button"><?php _e( 'Back', 'wp-k5n' ); ?></a>
+                    <a href="admin.php?page=wp-k5n-subscribers-group" class="button"><?php _e( 'Powrót', 'wp-k5n' ); ?></a>
                     <input type="submit" class="button-primary" name="wp_add_group"
                            value="<?php _e( 'Dodaj', 'wp-k5n' ); ?>"/>
                 </td>

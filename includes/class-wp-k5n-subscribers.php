@@ -2,377 +2,369 @@
 
 /**
  * @category   class
- * @package    WP_SMS
+ * @package    WP_K5N
  * @version    1.1
  */
-class WP_SMS_Subscriptions {
-	/**
-	 * Wordpress Dates
-	 *
-	 * @var string
-	 */
-	public $date;
+class WP_K5N_Subscriptions {
 
-	/**
-	 * Wordpress Database
-	 *
-	 * @var string
-	 */
-	protected $db;
+    /**
+     * Wordpress Dates
+     *
+     * @var string
+     */
+    public $date;
 
-	/**
-	 * Wordpress Table prefix
-	 *
-	 * @var string
-	 */
-	protected $tb_prefix;
+    /**
+     * Wordpress Database
+     *
+     * @var string
+     */
+    protected $db;
 
-	/**
-	 * Constructors
-	 */
-	public function __construct() {
-		global $wpdb, $table_prefix;
+    /**
+     * Wordpress Table prefix
+     *
+     * @var string
+     */
+    protected $tb_prefix;
 
-		$this->date      = WP_SMS_CURRENT_DATE;
-		$this->db        = $wpdb;
-		$this->tb_prefix = $table_prefix;
-	}
+    /**
+     * Constructors
+     */
+    public function __construct() {
+        global $wpdb, $table_prefix;
 
-	/**
-	 * Add Subscriber
-	 *
-	 * @param $name
-	 * @param $mobile
-	 * @param string $group_id
-	 * @param string $status
-	 * @param $key
-	 *
-	 * @return array
-	 * @internal param param $Not
-	 */
-	public function add_subscriber( $name, $mobile, $group_id = '', $status = '1', $key = nul ) {
-		if ( $this->is_duplicate( $mobile, $group_id ) ) {
-			return array( 'result'  => 'error',
-			              'message' => __( 'The mobile numbers has been already duplicate.', 'wp-sms' )
-			);
-		}
+        $this->date = WP_SMS_CURRENT_DATE;
+        $this->db = $wpdb;
+        $this->tb_prefix = $table_prefix;
+    }
 
-		$result = $this->db->insert(
-			$this->tb_prefix . "sms_subscribes",
-			array(
-				'date'         => $this->date,
-				'name'         => $name,
-				'mobile'       => $mobile,
-				'status'       => $status,
-				'activate_key' => $key,
-				'group_ID'     => $group_id,
-			)
-		);
+    /**
+     * Add Subscriber
+     *
+     * @param $name
+     * @param $mobile
+     * @param string $group_id
+     * @param string $status
+     * @param $key
+     *
+     * @return array
+     * @internal param param $Not
+     */
+    public function add_subscriber($name, $mobile, $group_id = '', $status = '1', $key = nul) {
+        if ($this->is_duplicate($mobile, $group_id)) {
+            return array('result' => 'error',
+                'message' => __('The mobile numbers has been already duplicate.', 'wp-k5n')
+            );
+        }
 
-		if ( $result ) {
-			/**
-			 * Run hook after adding subscribe.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $name name.
-			 * @param string $mobile mobile.
-			 */
-			do_action( 'wp_sms_add_subscriber', $name, $mobile );
+        $result = $this->db->insert(
+                $this->tb_prefix . "k5n_subscribes", array(
+            'date' => $this->date,
+            'name' => $name,
+            'mobile' => $mobile,
+            'status' => $status,
+            'activate_key' => $key,
+            'group_ID' => $group_id,
+                )
+        );
 
-			return array( 'result' => 'update', 'message' => __( 'Subscriber successfully added.', 'wp-sms' ) );
-		}
-	}
+        if ($result) {
+            /**
+             * Run hook after adding subscribe.
+             *
+             * @since 3.0
+             *
+             * @param string $name name.
+             * @param string $mobile mobile.
+             */
+            do_action('wp_k5n_add_subscriber', $name, $mobile);
 
-	/**
-	 * Get Subscriber
-	 *
-	 * @param  Not param
-	 *
-	 * @return array|null|object|void
-	 */
-	public function get_subscriber( $id ) {
-		$result = $this->db->get_row( "SELECT * FROM `{$this->tb_prefix}sms_subscribes` WHERE ID = '" . $id . "'" );
+            return array('result' => 'update', 'message' => __('Subscriber successfully added.', 'wp-k5n'));
+        }
+    }
 
-		if ( $result ) {
-			return $result;
-		}
-	}
+    /**
+     * Get Subscriber
+     *
+     * @param  Not param
+     *
+     * @return array|null|object|void
+     */
+    public function get_subscriber($id) {
+        $result = $this->db->get_row("SELECT * FROM `{$this->tb_prefix}k5n_subscribes` WHERE ID = '" . $id . "'");
 
-	/**
-	 * Delete Subscriber
-	 *
-	 * @param  Not param
-	 *
-	 * @return false|int|void
-	 */
-	public function delete_subscriber( $id ) {
-		$result = $this->db->delete(
-			$this->tb_prefix . "sms_subscribes",
-			array(
-				'ID' => $id,
-			)
-		);
+        if ($result) {
+            return $result;
+        }
+    }
 
-		if ( $result ) {
-			/**
-			 * Run hook after deleting subscribe.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $result result query.
-			 */
-			do_action( 'wp_sms_delete_subscriber', $result );
+    /**
+     * Delete Subscriber
+     *
+     * @param  Not param
+     *
+     * @return false|int|void
+     */
+    public function delete_subscriber($id) {
+        $result = $this->db->delete(
+                $this->tb_prefix . "k5n_subscribes", array(
+            'ID' => $id,
+                )
+        );
 
-			return $result;
-		}
-	}
+        if ($result) {
+            /**
+             * Run hook after deleting subscribe.
+             *
+             * @since 3.0
+             *
+             * @param string $result result query.
+             */
+            do_action('wp_k5n_delete_subscriber', $result);
 
-	/**
-	 * Delete subscribers by number
-	 *
-	 * @param $mobile
-	 * @param null $group_id
-	 *
-	 * @return array
-	 */
-	public function delete_subscriber_by_number( $mobile, $group_id = null ) {
-		$result = $this->db->delete(
-			$this->tb_prefix . "sms_subscribes",
-			array(
-				'mobile'   => $mobile,
-				'group_id' => $group_id,
-			)
-		);
+            return $result;
+        }
+    }
 
-		if ( ! $result ) {
-			return array( 'result' => 'error', 'message' => __( 'The subscribe does not exist.', 'wp-sms' ) );
-		}
+    /**
+     * Delete subscribers by number
+     *
+     * @param $mobile
+     * @param null $group_id
+     *
+     * @return array
+     */
+    public function delete_subscriber_by_number($mobile, $group_id = null) {
+        $result = $this->db->delete(
+                $this->tb_prefix . "k5n_subscribes", array(
+            'mobile' => $mobile,
+            'group_id' => $group_id,
+                )
+        );
 
-		/**
-		 * Run hook after deleting subscribe.
-		 *
-		 * @since 3.0
-		 *
-		 * @param string $result result query.
-		 */
-		do_action( 'wp_sms_delete_subscriber', $result );
+        if (!$result) {
+            return array('result' => 'error', 'message' => __('The subscribe does not exist.', 'wp-k5n'));
+        }
 
-		return array( 'result' => 'update', 'message' => __( 'Subscribe successfully removed.', 'wp-sms' ) );
-	}
+        /**
+         * Run hook after deleting subscribe.
+         *
+         * @since 3.0
+         *
+         * @param string $result result query.
+         */
+        do_action('wp_k5n_delete_subscriber', $result);
 
-	/**
-	 * Update Subscriber
-	 *
-	 * @param $id
-	 * @param $name
-	 * @param $mobile
-	 * @param string $group_id
-	 * @param string $status
-	 *
-	 * @return array|void
-	 * @internal param param $Not
-	 */
-	public function update_subscriber( $id, $name, $mobile, $group_id = '', $status = '1' ) {
-		if ( empty( $id ) or empty( $name ) or empty( $mobile ) ) {
-			return;
-		}
+        return array('result' => 'update', 'message' => __('Subscribe successfully removed.', 'wp-k5n'));
+    }
 
-		if ( $this->is_duplicate( $mobile, $group_id, $id ) ) {
-			return array( 'result'  => 'error',
-			              'message' => __( 'The mobile numbers has been already duplicate.', 'wp-sms' )
-			);
-		}
+    /**
+     * Update Subscriber
+     *
+     * @param $id
+     * @param $name
+     * @param $mobile
+     * @param string $group_id
+     * @param string $status
+     *
+     * @return array|void
+     * @internal param param $Not
+     */
+    public function update_subscriber($id, $name, $mobile, $group_id = '', $status = '1') {
+        if (empty($id) or empty($name) or empty($mobile)) {
+            return;
+        }
 
-		$result = $this->db->update(
-			$this->tb_prefix . "sms_subscribes",
-			array(
-				'name'     => $name,
-				'mobile'   => $mobile,
-				'group_ID' => $group_id,
-				'status'   => $status,
-			),
-			array(
-				'ID' => $id
-			)
-		);
+        if ($this->is_duplicate($mobile, $group_id, $id)) {
+            return array('result' => 'error',
+                'message' => __('The mobile numbers has been already duplicate.', 'wp-k5n')
+            );
+        }
 
-		if ( $result ) {
+        $result = $this->db->update(
+                $this->tb_prefix . "k5n_subscribes", array(
+            'name' => $name,
+            'mobile' => $mobile,
+            'group_ID' => $group_id,
+            'status' => $status,
+                ), array(
+            'ID' => $id
+                )
+        );
 
-			/**
-			 * Run hook after updating subscribe.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $result result query.
-			 */
-			do_action( 'wp_sms_update_subscriber', $result );
+        if ($result) {
 
-			return array( 'result' => 'update', 'message' => __( 'Subscriber successfully updated.', 'wp-sms' ) );
-		}
-	}
+            /**
+             * Run hook after updating subscribe.
+             *
+             * @since 3.0
+             *
+             * @param string $result result query.
+             */
+            do_action('wp_k5n_update_subscriber', $result);
 
-	/**
-	 * Get Subscriber
-	 *
-	 * @param  Not param
-	 *
-	 * @return array|null|object
-	 */
-	public function get_groups() {
-		$result = $this->db->get_results( "SELECT * FROM `{$this->tb_prefix}sms_subscribes_group`" );
+            return array('result' => 'update', 'message' => __('Subscriber successfully updated.', 'wp-k5n'));
+        }
+    }
 
-		if ( $result ) {
-			return $result;
-		}
-	}
+    /**
+     * Get Subscriber
+     *
+     * @param  Not param
+     *
+     * @return array|null|object
+     */
+    public function get_groups() {
+        $result = $this->db->get_results("SELECT * FROM `{$this->tb_prefix}k5n_subscribes_group`");
 
-	/**
-	 * Get Group
-	 *
-	 * @param  Not param
-	 *
-	 * @return array|null|object|void
-	 */
-	public function get_group( $group_id ) {
-		$result = $this->db->get_row( "SELECT * FROM `{$this->tb_prefix}sms_subscribes_group` WHERE ID = '" . $group_id . "'" );
+        if ($result) {
+            return $result;
+        }
+    }
 
-		if ( $result ) {
-			return $result;
-		}
-	}
+    /**
+     * Get Group
+     *
+     * @param  Not param
+     *
+     * @return array|null|object|void
+     */
+    public function get_group($group_id) {
+        $result = $this->db->get_row("SELECT * FROM `{$this->tb_prefix}k5n_subscribes_group` WHERE ID = '" . $group_id . "'");
 
-	/**
-	 * Add Group
-	 *
-	 * @param  Not param
-	 *
-	 * @return array
-	 */
-	public function add_group( $name ) {
-		if ( empty( $name ) ) {
-			return array( 'result' => 'error', 'message' => __( 'Name is empty!', 'wp-sms' ) );
-		}
+        if ($result) {
+            return $result;
+        }
+    }
 
-		$result = $this->db->insert(
-			$this->tb_prefix . "sms_subscribes_group",
-			array(
-				'name' => $name,
-			)
-		);
+    /**
+     * Add Group
+     *
+     * @param  Not param
+     *
+     * @return array
+     */
+    public function add_group($name) {
+        if (empty($name)) {
+            return array('result' => 'error', 'message' => __('Pole nazwy jest puste!', 'wp-k5n'));
+        }
 
-		if ( $result ) {
+        $result = $this->db->insert(
+                $this->tb_prefix . "k5n_subscribes_group", array(
+            'name' => $name,
+                )
+        );
 
-			/**
-			 * Run hook after adding group.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $result result query.
-			 */
-			do_action( 'wp_sms_add_group', $result );
+        if ($result) {
 
-			return array( 'result' => 'update', 'message' => __( 'Group successfully added.', 'wp-sms' ) );
-		}
+            /**
+             * Run hook after adding group.
+             *
+             * @since 3.0
+             *
+             * @param string $result result query.
+             */
+            do_action('wp_k5n_add_group', $result);
 
-	}
+            return array('result' => 'update', 'message' => __('Group successfully added.', 'wp-k5n'));
+        }
+    }
 
-	/**
-	 * Delete Group
-	 *
-	 * @param  Not param
-	 *
-	 * @return false|int|void
-	 */
-	public function delete_group( $id ) {
+    /**
+     * Delete Group
+     *
+     * @param  Not param
+     *
+     * @return false|int|void
+     */
+    public function delete_group($id) {
 
-		if ( empty( $id ) ) {
-			return;
-		}
+        if (empty($id)) {
+            return;
+        }
 
-		$result = $this->db->delete(
-			$this->tb_prefix . "sms_subscribes_group",
-			array(
-				'ID' => $id,
-			)
-		);
+        $result = $this->db->delete(
+                $this->tb_prefix . "k5n_subscribes_group", array(
+            'ID' => $id,
+                )
+        );
 
-		if ( $result ) {
+        if ($result) {
 
-			/**
-			 * Run hook after deleting group.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $result result query.
-			 */
-			do_action( 'wp_sms_delete_group', $result );
+            /**
+             * Run hook after deleting group.
+             *
+             * @since 3.0
+             *
+             * @param string $result result query.
+             */
+            do_action('wp_k5n_delete_group', $result);
 
-			return $result;
-		}
-	}
+            return $result;
+        }
+    }
 
-	/**
-	 * Update Group
-	 *
-	 * @param $id
-	 * @param $name
-	 *
-	 * @return array|void
-	 * @internal param param $Not
-	 */
-	public function update_group( $id, $name ) {
-		if ( empty( $id ) or empty( $name ) ) {
-			return;
-		}
+    /**
+     * Update Group
+     *
+     * @param $id
+     * @param $name
+     *
+     * @return array|void
+     * @internal param param $Not
+     */
+    public function update_group($id, $name) {
+        if (empty($id) or empty($name)) {
+            return;
+        }
 
-		$result = $this->db->update(
-			$this->tb_prefix . "sms_subscribes_group",
-			array(
-				'name' => $name,
-			),
-			array(
-				'ID' => $id
-			)
-		);
+        $result = $this->db->update(
+                $this->tb_prefix . "k5n_subscribes_group", array(
+            'name' => $name,
+                ), array(
+            'ID' => $id
+                )
+        );
 
-		if ( $result ) {
+        if ($result) {
 
-			/**
-			 * Run hook after updating group.
-			 *
-			 * @since 3.0
-			 *
-			 * @param string $result result query.
-			 */
-			do_action( 'wp_sms_update_group', $result );
+            /**
+             * Run hook after updating group.
+             *
+             * @since 3.0
+             *
+             * @param string $result result query.
+             */
+            do_action('wp_k5n_update_group', $result);
 
-			return array( 'result' => 'update', 'message' => __( 'Group successfully updated.', 'wp-sms' ) );
-		}
-	}
+            return array('result' => 'update', 'message' => __('Group successfully updated.', 'wp-k5n'));
+        }
+    }
 
-	/**
-	 * Check the mobile number is duplicate
-	 *
-	 * @param $mobile_number
-	 * @param null $group_id
-	 * @param null $id
-	 *
-	 * @return array|null|object|void
-	 */
-	private function is_duplicate( $mobile_number, $group_id = null, $id = null ) {
-		$sql = "SELECT * FROM `{$this->tb_prefix}sms_subscribes` WHERE mobile = '" . $mobile_number . "'";
+    /**
+     * Check the mobile number is duplicate
+     *
+     * @param $mobile_number
+     * @param null $group_id
+     * @param null $id
+     *
+     * @return array|null|object|void
+     */
+    private function is_duplicate($mobile_number, $group_id = null, $id = null) {
+        $sql = "SELECT * FROM `{$this->tb_prefix}k5n_subscribes` WHERE mobile = '" . $mobile_number . "'";
 
-		if ( $group_id ) {
-			$sql .= " AND group_id = '" . $group_id . "'";
-		}
+        if ($group_id) {
+            $sql .= " AND group_id = '" . $group_id . "'";
+        }
 
-		if ( $id ) {
-			$sql .= " AND id != '" . $id . "'";
-		}
+        if ($id) {
+            $sql .= " AND id != '" . $id . "'";
+        }
 
-		$result = $this->db->get_row( $sql );
+        $result = $this->db->get_row($sql);
 
-		return $result;
-	}
+        return $result;
+    }
+
 }

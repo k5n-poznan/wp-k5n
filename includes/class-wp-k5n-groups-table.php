@@ -64,8 +64,8 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'                => '<input type="checkbox" />', //Render a checkbox instead of text
-			'name'              => __( 'Name', 'wp-k5n' ),
-			'total_subscribers' => __( 'Total subscribers', 'wp-k5n' ),
+			'name'              => __( 'Nazwa', 'wp-k5n' ),
+			'total_subscribers' => __( 'Łączna liczba subskrybentów', 'wp-k5n' ),
 		);
 
 		return $columns;
@@ -83,7 +83,7 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 
 	function get_bulk_actions() {
 		$actions = array(
-			'bulk_delete' => __( 'Delete', 'wp-k5n' )
+			'bulk_delete' => __( 'Usuń', 'wp-k5n' )
 		);
 
 		return $actions;
