@@ -161,7 +161,7 @@ class WP_K5N_Settings {
         // Merge our new settings with the existing
         $output = array_merge($this->options, $input);
 
-        add_settings_error('wpk5n-notices', '', __('Settings updated', 'wp-k5n'), 'updated');
+        add_settings_error('wpk5n-notices', '', __('Ustawienia zostały zmienione.', 'wp-k5n'), 'updated');
 
         return $output;
     }
