@@ -28,6 +28,8 @@ define('WP_K5N_CURRENT_DATE', date('Y-m-d H:i:s', current_time('timestamp')));
  */
 $wpk5n_option = get_option('wpk5n_settings');
 
+include_once dirname( __FILE__ ) . '/includes/functions.php';
+
 $WP_K5N_Plugin = new WP_K5N_Plugin;
 
 
