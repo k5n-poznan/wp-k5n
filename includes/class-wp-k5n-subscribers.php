@@ -54,7 +54,7 @@ class WP_K5N_Subscriptions {
     public function add_subscriber($name, $surname, $mobile, $group_id = '', $status = '1', $key = nul) {
         if ($this->is_duplicate($mobile, $group_id)) {
             return array('result' => 'error',
-                'message' => __('The mobile numbers has been already duplicate.', 'wp-k5n')
+                'message' => __('Taki sam numer telefonu należy do innego subskrybenta.', 'wp-k5n')
             );
         }
 
@@ -81,7 +81,7 @@ class WP_K5N_Subscriptions {
              */
             do_action('wp_k5n_add_subscriber', $name, $mobile);
 
-            return array('result' => 'update', 'message' => __('Subscriber successfully added.', 'wp-k5n'));
+            return array('result' => 'update', 'message' => __('Dodano subskrybenta.', 'wp-k5n'));
         }
     }
 
@@ -145,7 +145,7 @@ class WP_K5N_Subscriptions {
         );
 
         if (!$result) {
-            return array('result' => 'error', 'message' => __('The subscribe does not exist.', 'wp-k5n'));
+            return array('result' => 'error', 'message' => __('Nie znaleziono subskrybenta.', 'wp-k5n'));
         }
 
         /**
@@ -157,7 +157,7 @@ class WP_K5N_Subscriptions {
          */
         do_action('wp_k5n_delete_subscriber', $result);
 
-        return array('result' => 'update', 'message' => __('Subscribe successfully removed.', 'wp-k5n'));
+        return array('result' => 'update', 'message' => __('Usunięto subskrybenta.', 'wp-k5n'));
     }
 
     /**
@@ -179,7 +179,7 @@ class WP_K5N_Subscriptions {
 
         if ($this->is_duplicate($mobile, $group_id, $id)) {
             return array('result' => 'error',
-                'message' => __('The mobile numbers has been already duplicate.', 'wp-k5n')
+                'message' => __('Taki sam numer telefonu należy do innego subskrybenta.', 'wp-k5n')
             );
         }
 
@@ -206,7 +206,7 @@ class WP_K5N_Subscriptions {
              */
             do_action('wp_k5n_update_subscriber', $result);
 
-            return array('result' => 'update', 'message' => __('Subscriber successfully updated.', 'wp-k5n'));
+            return array('result' => 'update', 'message' => __('Zmieniono dane subskrybanta.', 'wp-k5n'));
         }
     }
 
@@ -269,7 +269,7 @@ class WP_K5N_Subscriptions {
              */
             do_action('wp_k5n_add_group', $result);
 
-            return array('result' => 'update', 'message' => __('Group successfully added.', 'wp-k5n'));
+            return array('result' => 'update', 'message' => __('Dodano nową grupę.', 'wp-k5n'));
         }
     }
 
@@ -340,7 +340,7 @@ class WP_K5N_Subscriptions {
              */
             do_action('wp_k5n_update_group', $result);
 
-            return array('result' => 'update', 'message' => __('Group successfully updated.', 'wp-k5n'));
+            return array('result' => 'update', 'message' => __('Zmieniono dane grupy.', 'wp-k5n'));
         }
     }
 

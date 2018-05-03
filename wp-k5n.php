@@ -28,7 +28,7 @@ define('WP_K5N_CURRENT_DATE', date('Y-m-d H:i:s', current_time('timestamp')));
  */
 $wpk5n_option = get_option('wpk5n_settings');
 
-include_once dirname( __FILE__ ) . '/includes/functions.php';
+include_once dirname(__FILE__) . '/includes/functions.php';
 
 $WP_K5N_Plugin = new WP_K5N_Plugin;
 
@@ -366,6 +366,29 @@ class WP_K5N_Plugin {
         $list_table->prepare_items();
 
         include_once dirname(__FILE__) . "/includes/templates/subscribe/groups.php";
+    }
+
+    /**
+     * Show message notice in admin
+     *
+     * @param $result
+     * @param $message
+     *
+     * @return string|void
+     * @internal param param $Not
+     */
+    public function notice_result($result, $message) {
+        if (empty($result)) {
+            return;
+        }
+
+        if ($result == 'error') {
+            return '<div class="updated settings-error notice error is-dismissible"><p><strong>' . $message . '</strong></p><button class="notice-dismiss" type="button"><span class="screen-reader-text">' . __('Zamknij', 'wp-k5n') . '</span></button></div>';
+        }
+
+        if ($result == 'update') {
+            return '<div class="updated settings-update notice is-dismissible"><p><strong>' . $message . '</strong></p><button class="notice-dismiss" type="button"><span class="screen-reader-text">' . __('Zamknij', 'wp-k5n') . '</span></button></div>';
+        }
     }
 
 }

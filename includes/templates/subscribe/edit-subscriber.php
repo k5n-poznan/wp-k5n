@@ -1,9 +1,9 @@
 <div class="wrap">
-    <h2><?php _e('Edit Subscriber', 'wp-k5n'); ?></h2>
+    <h2><?php _e('Edytuj Subskrybenta', 'wp-k5n'); ?></h2>
     <form action="" method="post">
         <table>
             <tr>
-                <td colspan="2"><h3><?php _e('Subscriber Info:', 'wp-k5n'); ?></h3></td>
+                <td colspan="2"><h3><?php _e('Subskrybent Info:', 'wp-k5n'); ?></h3></td>
             </tr>
             <tr>
                 <td><span class="label_td" for="wp_subscribe_name"><?php _e('Imie', 'wp-k5n'); ?>:</span></td>
