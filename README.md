@@ -13,7 +13,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **Waldemar Kłaczyński** - *Initial work* - [Waldemar Kłaczyński](https://github.com/wklaczynski)
 
-See also the list of [contributors](https://github.com/wklaczynski/state-flow-faces/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/k5n-poznan/wp-k5n/contributors) who participated in this project.
 
 ## License
 
