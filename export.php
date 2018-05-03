@@ -51,4 +51,3 @@ if ($type) {
 } else {
     wp_die(__('Proszę wybrać żądane elementy.', 'wp-k5n'), false, array('back_link' => true));
 }
-?>

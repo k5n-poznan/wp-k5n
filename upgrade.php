@@ -15,7 +15,7 @@ if (is_admin()) {
                                 surname VARCHAR(20),
 				mobile VARCHAR(20) NOT NULL,
 				status tinyint(1),
-                                biuletyn tinyint(1),
+                                bulletin tinyint(1),
 				activate_key INT(11),
 				group_ID int(5),
 				PRIMARY KEY(ID)) CHARSET=utf8

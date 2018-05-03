@@ -51,7 +51,7 @@ class WP_K5N_Subscriptions {
      * @return array
      * @internal param param $Not
      */
-    public function add_subscriber($name, $mobile, $group_id = '', $status = '1', $key = nul) {
+    public function add_subscriber($name, $surname, $mobile, $group_id = '', $status = '1', $key = nul) {
         if ($this->is_duplicate($mobile, $group_id)) {
             return array('result' => 'error',
                 'message' => __('The mobile numbers has been already duplicate.', 'wp-k5n')
@@ -62,6 +62,7 @@ class WP_K5N_Subscriptions {
                 $this->tb_prefix . "k5n_subscribes", array(
             'date' => $this->date,
             'name' => $name,
+            'surname' => $surname,
             'mobile' => $mobile,
             'status' => $status,
             'activate_key' => $key,
@@ -171,7 +172,7 @@ class WP_K5N_Subscriptions {
      * @return array|void
      * @internal param param $Not
      */
-    public function update_subscriber($id, $name, $mobile, $group_id = '', $status = '1') {
+    public function update_subscriber($id, $name, $surname, $mobile, $group_id = '', $status = '1') {
         if (empty($id) or empty($name) or empty($mobile)) {
             return;
         }
@@ -185,6 +186,7 @@ class WP_K5N_Subscriptions {
         $result = $this->db->update(
                 $this->tb_prefix . "k5n_subscribes", array(
             'name' => $name,
+            'surname' => $surname,
             'mobile' => $mobile,
             'group_ID' => $group_id,
             'status' => $status,

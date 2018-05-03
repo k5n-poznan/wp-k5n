@@ -109,8 +109,11 @@ class WP_K5N_Plugin {
         $this->subscribe = new WP_K5N_Subscriptions();
 
 
+
         add_action('admin_enqueue_scripts', array($this, 'admin_assets'));
         add_action('wp_enqueue_scripts', array($this, 'front_assets'));
+
+        add_action('dashboard_glance_items', array($this, 'dashboard_glance'));
         add_filter('plugin_row_meta', array($this, 'meta_links'), 0, 2);
 
         add_action('admin_menu', array($this, 'admin_menu'));
@@ -167,6 +170,7 @@ class WP_K5N_Plugin {
         $role = get_role('administrator');
 
         $role->add_cap('wpk5n_setting');
+        $role->add_cap('wpk5n_subscribers');
         $role->add_cap('wpk5n_subscribe_groups');
     }
 
@@ -222,7 +226,18 @@ class WP_K5N_Plugin {
      * @param  Not param
      */
     public function front_assets() {
-        
+        wp_register_style('wpk5n-subscribe', plugin_dir_url(__FILE__) . 'assets/css/subscribe.css', true, '1.1');
+        wp_enqueue_style('wpk5n-subscribe');
+    }
+
+    /**
+     * Dashboard glance plugin
+     *
+     * @param  Not param
+     */
+    public function dashboard_glance() {
+        $subscribe = $this->db->get_var("SELECT COUNT(*) FROM {$this->tb_prefix}k5n_subscribes");
+        echo "<li class='wpk5n-subscribe-count'><a href='" . $this->admin_url . "admin.php?page=wp-k5n-subscribers'>" . sprintf(__('%s Subskrybentów K5N', 'wp-k5n'), $subscribe) . "</a></li>";
     }
 
     /**
@@ -236,10 +251,75 @@ class WP_K5N_Plugin {
             'render_settings'
                 ), 'dashicons-groups');
 
+        add_submenu_page('wp-k5n', __('Subskrybenci', 'wp-k5n'), __('Subskrybenci', 'wp-k5n'), 'wpk5n_subscribers', 'wp-k5n-subscribers', array(
+            $this,
+            'subscribe_page'
+        ));
+
         add_submenu_page('wp-k5n', __('Grupy subskrybentów', 'wp-k5n'), __('Grupy subskrybentów', 'wp-k5n'), 'wpk5n_subscribe_groups', 'wp-k5n-subscribers-group', array(
             $this,
             'groups_page'
         ));
+    }
+
+    /**
+     * Subscribe admin page
+     *
+     * @param  Not param
+     */
+    public function subscribe_page() {
+
+        if (isset($_GET['action'])) {
+            // Add subscriber page
+            if ($_GET['action'] == 'add') {
+                include_once dirname(__FILE__) . "/includes/templates/subscribe/add-subscriber.php";
+
+                if (isset($_POST['wp_add_subscribe'])) {
+                    $result = $this->subscribe->add_subscriber($_POST['wp_subscribe_name'], $_POST['wp_subscribe_surname'], $_POST['wp_subscribe_mobile'], $_POST['wpk5n_group_name']);
+                    echo $this->notice_result($result['result'], $result['message']);
+                }
+
+                return;
+            }
+
+            // Edit subscriber page
+            if ($_GET['action'] == 'edit') {
+                if (isset($_POST['wp_update_subscribe'])) {
+                    $result = $this->subscribe->update_subscriber($_GET['ID'], $_POST['wp_subscribe_name'], $_POST['wp_subscribe_surname'], $_POST['wp_subscribe_mobile'], $_POST['wpk5n_group_name'], $_POST['wpk5n_subscribe_status']);
+                    echo $this->notice_result($result['result'], $result['message']);
+                }
+
+                $get_subscribe = $this->subscribe->get_subscriber($_GET['ID']);
+                include_once dirname(__FILE__) . "/includes/templates/subscribe/edit-subscriber.php";
+
+                return;
+            }
+
+            // Import subscriber page
+            if ($_GET['action'] == 'import') {
+                include_once dirname(__FILE__) . "/import.php";
+                include_once dirname(__FILE__) . "/includes/templates/subscribe/import.php";
+
+                return;
+            }
+
+            // Export subscriber page
+            if ($_GET['action'] == 'export') {
+                include_once dirname(__FILE__) . "/includes/templates/subscribe/export.php";
+
+                return;
+            }
+        }
+
+        include_once dirname(__FILE__) . '/includes/class-wp-k5n-subscribers-table.php';
+
+        //Create an instance of our package class...
+        $list_table = new WP_K5N_Subscribers_List_Table();
+
+        //Fetch, prepare, sort, and filter our data...
+        $list_table->prepare_items();
+
+        include_once dirname(__FILE__) . "/includes/templates/subscribe/subscribes.php";
     }
 
     /**
