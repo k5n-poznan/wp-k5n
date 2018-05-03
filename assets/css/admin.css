@@ -1,0 +1,141 @@
+.wpk5n-error-notice {
+    background-color: #ffd5d5;
+    padding: 7px 7px;
+    display: inline-block;
+    border: 1px solid #ffb7b7;
+    border-radius: 2px;
+    color: #e02222;
+}
+
+.wpk5n-time {
+    clear: both;
+    color: #a4a2a2;
+    display: block;
+    font-size: 10px;
+}
+
+.wpk5n-color-green {
+    color: #27bb00;
+}
+
+.wpk5n-color-red {
+    color: #f10000;
+}
+
+.wpk5n-button-group .dashicons {
+    vertical-align: text-top;
+}
+
+#wpk5n-select-subscriber-group {
+    display: none;
+}
+
+#wpk5n-custom-text {
+    display: none;
+}
+
+#wpk5n-custom-text textarea {
+    font-size: 12px;
+    width: 100%;
+    height: 114px;
+}
+
+#wpk5n-custom-text p.description.data, ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½#wpk5n-custom-text code {
+    font-size: 11px !important;
+}
+
+.wpk5n-plugin-meta-link span {
+    font-size: 14px;
+    vertical-align: sub;
+}
+
+.wpk5n-plugin-meta-link.wp-k5n-pro {
+    color: green;
+    font-weight: bold;
+}
+
+.wpk5n-has-credit {
+    color: #3b9d00;
+}
+
+.wpk5n-no-credit {
+    color: #c20000;
+}
+
+.wpk5n-premium-tab {
+    color: #F1F1F1;
+    background: #21A8D2;
+}
+
+.wpk5n-tab-group {
+    border: 1px solid #d8d8d8;
+    display: block;
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    margin-top: 18px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.wpk5n-tab {
+    width: 190px;
+    float: left;
+}
+
+.wpk5n-tab li {
+    margin: 0;
+}
+
+.wpk5n-tab #wpk5n-logo {
+    text-align: center;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.wpk5n-tab #wpk5n-logo img {
+    width: 50%;
+}
+
+.wpk5n-tab li a {
+    display: block;
+    text-decoration: none;
+    padding: 13px 14px;
+    font-weight: bold;
+    margin: 0 -1px 0px 0;
+}
+
+.wpk5n-tab li .active {
+    background-color: #f4f6ff;
+    border-top: 1px solid #d8d8d8;
+    border-bottom: 1px solid #d8d8d8;
+    border-right: 1px solid #f4f6ff;
+}
+
+.wpk5n-tab-content {
+    background-color: #f4f6ff;
+    display: grid;
+    padding: 6px 33px;
+    border-left: 1px solid #d8d8d8;
+    min-height: 564px;
+}
+
+.rtl .wpk5n-tab {
+    float: right;
+}
+
+.rtl .wpk5n-tab-content {
+    border-left: 0px none;
+    border-right: 1px solid #d8d8d8;
+}
+
+.rtl .wpk5n-tab li a {
+    margin: 0 0 0 -1px;
+}
+
+.rtl .wpk5n-tab li .active {
+}
+
+.wpk5n-tab-content .form-table th {
+    width: 150px;
+}
