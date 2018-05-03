@@ -123,11 +123,11 @@ class WP_K5N_Plugin {
 
     public function meta_links($links, $file) {
         if ($file == 'wp-k5n/wp-k5n.php') {
-            $rate_url = 'http://wordpress.org/support/view/plugin-reviews/wp-k5n?rate=5#postform';
-            $links[] = '<a href="' . $rate_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Rate this plugin', 'wp-k5n') . '</a>';
+//            $rate_url = 'http://wordpress.org/support/view/plugin-reviews/wp-k5n?rate=5#postform';
+//            $links[] = '<a href="' . $rate_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Rate this plugin', 'wp-k5n') . '</a>';
 
-            $newsletter_url = WP_K5N_SITE . '/newsletter';
-            $links[] = '<a href="' . $newsletter_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Subscribe to our Phone Newsletter', 'wp-k5n') . '</a>';
+//            $newsletter_url = WP_K5N_SITE . '/newsletter';
+//            $links[] = '<a href="' . $newsletter_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Subscribe to our Phone Newsletter', 'wp-k5n') . '</a>';
         }
 
         return $links;
