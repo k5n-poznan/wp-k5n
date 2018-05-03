@@ -36,8 +36,8 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 
 		//Build row actions
 		$actions = array(
-			'edit'   => sprintf( '<a href="?page=%s&action=%s&ID=%s">' . __( 'Edit', 'wp-sms' ) . '</a>', $_REQUEST['page'], 'edit', $item['ID'] ),
-			'delete' => sprintf( '<a href="?page=%s&action=%s&ID=%s">' . __( 'Delete', 'wp-sms' ) . '</a>', $_REQUEST['page'], 'delete', $item['ID'] ),
+			'edit'   => sprintf( '<a href="?page=%s&action=%s&ID=%s">' . __( 'Edit', 'wp-k5n' ) . '</a>', $_REQUEST['page'], 'edit', $item['ID'] ),
+			'delete' => sprintf( '<a href="?page=%s&action=%s&ID=%s">' . __( 'Delete', 'wp-k5n' ) . '</a>', $_REQUEST['page'], 'delete', $item['ID'] ),
 		);
 
 		//Return the title contents
@@ -64,8 +64,8 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'                => '<input type="checkbox" />', //Render a checkbox instead of text
-			'name'              => __( 'Name', 'wp-sms' ),
-			'total_subscribers' => __( 'Total subscribers', 'wp-sms' ),
+			'name'              => __( 'Name', 'wp-k5n' ),
+			'total_subscribers' => __( 'Total subscribers', 'wp-k5n' ),
 		);
 
 		return $columns;
@@ -83,7 +83,7 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 
 	function get_bulk_actions() {
 		$actions = array(
-			'bulk_delete' => __( 'Delete', 'wp-sms' )
+			'bulk_delete' => __( 'Delete', 'wp-k5n' )
 		);
 
 		return $actions;
@@ -95,24 +95,24 @@ class WP_K5N_Subscribers_Groups_List_Table extends WP_List_Table {
 		//Detect when a bulk action is being triggered...
 		// Search action
 		if ( isset( $_GET['s'] ) ) {
-			$this->data = $wpdb->get_results( $wpdb->prepare( "SELECT * from `{$table_prefix}sms_subscribes_group` WHERE name LIKE %s", '%' . $wpdb->esc_like( $_GET['s'] ) . '%' ), ARRAY_A );
+			$this->data = $wpdb->get_results( $wpdb->prepare( "SELECT * from `{$table_prefix}k5n_subscribes_group` WHERE name LIKE %s", '%' . $wpdb->esc_like( $_GET['s'] ) . '%' ), ARRAY_A );
 		}
 
 		// Bulk delete action
 		if ( 'bulk_delete' == $this->current_action() ) {
 			foreach ( $_GET['id'] as $id ) {
-				$wpdb->delete( $table_prefix . "sms_subscribes_group", array( 'ID' => $id ) );
+				$wpdb->delete( $table_prefix . "k5n_subscribes_group", array( 'ID' => $id ) );
 			}
 
-			$this->data = $wpdb->get_results( "SELECT * FROM `{$table_prefix}sms_subscribes_group`", ARRAY_A );
-			echo '<div class="updated notice is-dismissible below-h2"><p>' . __( 'Items removed.', 'wp-sms' ) . '</p></div>';
+			$this->data = $wpdb->get_results( "SELECT * FROM `{$table_prefix}k5n_subscribes_group`", ARRAY_A );
+			echo '<div class="updated notice is-dismissible below-h2"><p>' . __( 'Items removed.', 'wp-k5n' ) . '</p></div>';
 		}
 
 		// Single delete action
 		if ( 'delete' == $this->current_action() ) {
-			$wpdb->delete( $table_prefix . "sms_subscribes_group", array( 'ID' => $_GET['ID'] ) );
-			$this->data = $wpdb->get_results( "SELECT * FROM `{$table_prefix}sms_subscribes_group`", ARRAY_A );
-			echo '<div class="updated notice is-dismissible below-h2"><p>' . __( 'Item removed.', 'wp-sms' ) . '</p></div>';
+			$wpdb->delete( $table_prefix . "k5n_subscribes_group", array( 'ID' => $_GET['ID'] ) );
+			$this->data = $wpdb->get_results( "SELECT * FROM `{$table_prefix}k5n_subscribes_group`", ARRAY_A );
+			echo '<div class="updated notice is-dismissible below-h2"><p>' . __( 'Item removed.', 'wp-k5n' ) . '</p></div>';
 		}
 	}
 
