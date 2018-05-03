@@ -246,7 +246,7 @@ class WP_K5N_Plugin {
             }
         }
 
-        include_once dirname(__FILE__) . '/includes/class-wp-sms-groups-table.php';
+        include_once dirname(__FILE__) . '/includes/class-wp-k5n-groups-table.php';
 
         //Create an instance of our package class...
         $list_table = new WP_SMS_Subscribers_Groups_List_Table();
