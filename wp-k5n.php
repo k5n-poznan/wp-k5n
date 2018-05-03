@@ -102,10 +102,11 @@ class WP_K5N_Plugin {
         __('A simple and powerful texting plugin for wordpress', 'wp-k5n');
 
         $this->includes();
-
         $this->setting_page = new WP_K5N_Settings();
 
+
         $this->init();
+        $this->subscribe = new WP_K5N_Subscriptions();
 
 
         add_action('admin_enqueue_scripts', array($this, 'admin_assets'));
@@ -179,6 +180,7 @@ class WP_K5N_Plugin {
             'includes/class-wp-k5n-settings',
             'includes/class-wp-k5n-version',
             'includes/class-wp-k5n-features',
+            'includes/class-wp-k5n-subscribers',
         );
 
         foreach ($files as $file) {
