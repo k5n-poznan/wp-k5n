@@ -53,9 +53,9 @@ abstract class WP_K5N_Message {
         $this->options = $wpk5n_option;
     }
 
-    public function insertToDB($sender, $message, $recipient, $flash, $status = '0') {
+    public function insertToDB($message, $recipient, $flash, $status = '0') {
         return $this->db->insert(
-                        $this->tb_prefix . "sms_send", array(
+                        $this->tb_prefix . "k5n_sms_outbox", array(
                     'date' => WP_K5N_CURRENT_DATE,
                     'message' => $message,
                     'status' => $status,
