@@ -3,7 +3,7 @@
 /**
  * Plugin Name: WP K5N
  * Plugin URI: http://k5n.pl/
- * Description: A powerful texting plugin for WordPress
+ * Description: Ta wtyczka instaluje dodatkowe funkcje dla WordPress wykorzystywane przez społecznośc kościoła K5N
  * Version: 1.0.1
  * Author: Waldemar Kłaczyński
  * Text Domain: wp-k5n
