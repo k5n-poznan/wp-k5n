@@ -5,6 +5,40 @@ if (!defined('ABSPATH')) {
 }
 
 
+if (!function_exists('initial_message_producer')) {
+
+    /**
+     * Initial gateway
+     * @return mixed
+     */
+    function initial_message_producer() {
+        global $wpk5n_option;
+
+        // Include default gateway
+        include_once dirname(__FILE__) . '/class-wp-k5n-message.php';
+        include_once dirname(__FILE__) . '/producers/default.class.php';
+
+
+        $producer_name = 'basic_k5n_message';
+
+        if (is_file(dirname(__FILE__) . '/producers/' . $producer_name . '.class.php')) {
+            include_once dirname(__FILE__) . '/producers/' . $producer_name . '.class.php';
+        } else {
+            return new Default_Message;
+        }
+
+        // Create object from the gateway class
+        if ($producer_name == 'default') {
+            $mess = new Default_Message();
+        } else {
+            $mess = new $producer_name;
+        }
+
+        // Return message object
+        return $mess;
+    }
+
+}
 
 
 if (!function_exists('wps_get_group_by_id')) {

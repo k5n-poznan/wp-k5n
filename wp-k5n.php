@@ -29,6 +29,7 @@ define('WP_K5N_CURRENT_DATE', date('Y-m-d H:i:s', current_time('timestamp')));
 $wpk5n_option = get_option('wpk5n_settings');
 
 include_once dirname(__FILE__) . '/includes/functions.php';
+$k5nmsg = initial_message_producer();
 
 $WP_K5N_Plugin = new WP_K5N_Plugin;
 
@@ -49,6 +50,13 @@ class WP_K5N_Plugin {
      * @var string
      */
     public $admin_url = WP_K5N_ADMIN_URL;
+
+    /**
+     * WP message object
+     *
+     * @var string
+     */
+    public $msg;
 
     /**
      * Wordpress Database
@@ -91,7 +99,7 @@ class WP_K5N_Plugin {
      * @param  Not param
      */
     public function __construct() {
-        global $wpdb, $table_prefix, $wpk5n_option;
+        global $wpdb, $table_prefix, $wpk5n_option, $k5nmsg;
 
         $this->db = $wpdb;
         $this->tb_prefix = $table_prefix;
@@ -104,6 +112,8 @@ class WP_K5N_Plugin {
         __('A simple and powerful texting plugin for wordpress', 'wp-k5n');
 
         $this->includes();
+        $this->msg = $k5nmsg;
+        
         $this->setting_page = new WP_K5N_Settings();
 
 
@@ -328,30 +338,30 @@ class WP_K5N_Plugin {
         $get_group_result = $this->db->get_results("SELECT * FROM `{$this->tb_prefix}k5n_subscribes_group`");
         $get_users_mobile = $this->db->get_col("SELECT `meta_value` FROM `{$this->tb_prefix}usermeta` WHERE `meta_key` = 'mobile'");
 
-        if (isset($_POST['SendSMS'])) {
+        if (isset($_POST['SendMessage'])) {
             if ($_POST['wp_get_message']) {
                 if ($_POST['wp_send_to'] == "wp_subscribe_username") {
                     if ($_POST['wpk5n_group_name'] == 'all') {
-                        $this->sms->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1'");
+                        $this->msg->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1'");
                     } else {
-                        $this->sms->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1' AND `group_ID` = '" . $_POST['wpsms_group_name'] . "'");
+                        $this->msg->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1' AND `group_ID` = '" . $_POST['wpsms_group_name'] . "'");
                     }
                 } else if ($_POST['wp_send_to'] == "wp_users") {
-                    $this->sms->to = $get_users_mobile;
+                    $this->msg->to = $get_users_mobile;
                 } else if ($_POST['wp_send_to'] == "wp_tellephone") {
-                    $this->sms->to = explode(",", $_POST['wp_get_number']);
+                    $this->msg->to = explode(",", $_POST['wp_get_number']);
                 }
 
-                $this->sms->msg = $_POST['wp_get_message'];
+                $this->msg->msg = $_POST['wp_get_message'];
 
                 if (isset($_POST['wp_flash'])) {
-                    $this->sms->isflash = true;
+                    $this->msg->isflash = true;
                 } else {
-                    $this->sms->isflash = false;
+                    $this->msg->isflash = false;
                 }
 
                 // Send sms
-                $response = $this->sms->SendSMS();
+                $response = $this->msg->send();
 
                 if (is_wp_error($response)) {
                     if (is_array($response->get_error_message())) {
@@ -360,13 +370,12 @@ class WP_K5N_Plugin {
                         $response = $response->get_error_message();
                     }
 
-                    echo "<div class='error'><p>" . sprintf(__('<strong>SMS was not delivered! results received:</strong> %s', 'wp-sms'), $response) . "</p></div>";
+                    echo "<div class='error'><p>" . sprintf(__('<strong>Komunikat nie został dostarczony! Otrzymane wyniki:</strong> %s', 'wp-k5n'), $response) . "</p></div>";
                 } else {
-                    echo "<div class='updated'><p>" . __('SMS was sent with success', 'wp-sms') . "</p></div>";
-                    update_option('wp_last_credit', $this->sms->GetCredit());
+                    echo "<div class='updated'><p>" . __('Komunikat został dodany i oczekuje na wysłanie', 'wp-sms') . "</p></div>";
                 }
             } else {
-                echo "<div class='error'><p>" . __('Please enter a message', 'wp-sms') . "</p></div>";
+                echo "<div class='error'><p>" . __('Proszę wprowadzić wiadomość', 'wp-sms') . "</p></div>";
             }
         }
 
@@ -374,7 +383,7 @@ class WP_K5N_Plugin {
     }
 
     /**
-     * Outbox sms admin page
+     * Outbox messages admin page
      *
      * @param  Not param
      */

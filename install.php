@@ -26,6 +26,7 @@ $create_k5n_outbox = ( "CREATE TABLE IF NOT EXISTS {$table_prefix}k5n_sms_outbox
 	sender VARCHAR(20) NOT NULL,
 	message TEXT NOT NULL,
 	recipient TEXT NOT NULL,
+        flash tinyint(1),
 	status tinyint(1),
 	PRIMARY KEY(ID)) CHARSET=utf8
 " );

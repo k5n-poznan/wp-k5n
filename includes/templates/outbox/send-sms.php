@@ -77,7 +77,7 @@
                     <textarea dir="auto" cols="80" rows="5" name="wp_get_message" id="wp_get_message"></textarea><br/>
                 </td>
             </tr>
-            <?php if ($this->k5n->flash == "enable") { ?>
+            <?php if ($this->msg->flash == "enable") { ?>
                 <tr>
                     <td><?php _e('Wyślij Flash', 'wp-k5n'); ?>:</td>
                     <td>
@@ -93,7 +93,7 @@
             <tr>
                 <td>
                     <p class="submit">
-                        <input type="submit" class="button-primary" name="SendSMS"
+                        <input type="submit" class="button-primary" name="SendMessage"
                                value="<?php _e('Wyślij', 'wp-k5n'); ?>"/>
                     </p>
                 </td>

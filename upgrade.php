@@ -33,6 +33,7 @@ if (is_admin()) {
 				sender VARCHAR(20) NOT NULL,
 				message TEXT NOT NULL,
 				recipient TEXT NOT NULL,
+                                flash tinyint(1),
                                 status tinyint(1),
 				PRIMARY KEY(ID)) CHARSET=utf8
 			" );
