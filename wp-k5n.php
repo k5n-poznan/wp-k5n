@@ -115,6 +115,7 @@ class WP_K5N_Plugin {
         add_action('admin_enqueue_scripts', array($this, 'admin_assets'));
         add_action('wp_enqueue_scripts', array($this, 'front_assets'));
 
+        add_action('admin_bar_menu', array($this, 'adminbar'));
         add_action('dashboard_glance_items', array($this, 'dashboard_glance'));
         add_filter('plugin_row_meta', array($this, 'meta_links'), 0, 2);
 
@@ -173,6 +174,8 @@ class WP_K5N_Plugin {
         // get administrator role
         $role = get_role('administrator');
 
+        $role->add_cap('wpk5n_sendsms');
+        $role->add_cap('wpk5n_outbox');
         $role->add_cap('wpk5n_setting');
         $role->add_cap('wpk5n_subscribers');
         $role->add_cap('wpk5n_subscribe_groups');
@@ -242,6 +245,24 @@ class WP_K5N_Plugin {
     }
 
     /**
+     * Admin bar plugin
+     *
+     * @param  Not param
+     */
+    public function adminbar() {
+        global $wp_admin_bar, $wpk5n_option;
+
+        if (is_super_admin() && is_admin_bar_showing()) {
+            $wp_admin_bar->add_menu(array(
+                'id' => 'wp-send-sms',
+                'parent' => 'new-content',
+                'title' => __('Powiadomienie K5N', 'wp-k5n'),
+                'href' => $this->admin_url . '/admin.php?page=wp-k5n-sendsms'
+            ));
+        }
+    }
+
+    /**
      * Dashboard glance plugin
      *
      * @param  Not param
@@ -262,6 +283,22 @@ class WP_K5N_Plugin {
             'render_settings'
                 ), 'dashicons-groups');
 
+        add_submenu_page('wp-k5n', __('Ustawienia', 'wp-k5n'), __('Ustawienia', 'wp-k5n'), 'wpk5n_setting', 'wp-k5n', array(
+            &$this->setting_page,
+            'render_settings'));
+
+
+        add_submenu_page('wp-k5n', __('Wyślij powiadomienie', 'wp-k5n'), __('Wyślij powiadomienie', 'wp-k5n'), 'wpk5n_sendsms', 'wp-k5n-sendsms', array(
+            $this,
+            'send_page'
+        ));
+
+        add_submenu_page('wp-k5n', __('Powiadomienia K5N', 'wp-sms'), __('Powiadomienia K5N', 'wp-k5n'), 'wpk5n_outbox', 'wp-k5n-outbox', array(
+            $this,
+            'outbox_page'
+        ));
+
+
         add_submenu_page('wp-k5n', __('Subskrybenci', 'wp-k5n'), __('Subskrybenci', 'wp-k5n'), 'wpk5n_subscribers', 'wp-k5n-subscribers', array(
             $this,
             'subscribe_page'
@@ -278,6 +315,79 @@ class WP_K5N_Plugin {
      */
     public function register_widget() {
         register_widget('WPK5N_Subscribe_Widget');
+    }
+
+    /**
+     * Sending sms admin page
+     *
+     * @param  Not param
+     */
+    public function send_page() {
+        global $wpsms_option;
+
+        $get_group_result = $this->db->get_results("SELECT * FROM `{$this->tb_prefix}k5n_subscribes_group`");
+        $get_users_mobile = $this->db->get_col("SELECT `meta_value` FROM `{$this->tb_prefix}usermeta` WHERE `meta_key` = 'mobile'");
+
+        if (isset($_POST['SendSMS'])) {
+            if ($_POST['wp_get_message']) {
+                if ($_POST['wp_send_to'] == "wp_subscribe_username") {
+                    if ($_POST['wpk5n_group_name'] == 'all') {
+                        $this->sms->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1'");
+                    } else {
+                        $this->sms->to = $this->db->get_col("SELECT mobile FROM {$this->tb_prefix}k5n_subscribes WHERE `status` = '1' AND `group_ID` = '" . $_POST['wpsms_group_name'] . "'");
+                    }
+                } else if ($_POST['wp_send_to'] == "wp_users") {
+                    $this->sms->to = $get_users_mobile;
+                } else if ($_POST['wp_send_to'] == "wp_tellephone") {
+                    $this->sms->to = explode(",", $_POST['wp_get_number']);
+                }
+
+                $this->sms->msg = $_POST['wp_get_message'];
+
+                if (isset($_POST['wp_flash'])) {
+                    $this->sms->isflash = true;
+                } else {
+                    $this->sms->isflash = false;
+                }
+
+                // Send sms
+                $response = $this->sms->SendSMS();
+
+                if (is_wp_error($response)) {
+                    if (is_array($response->get_error_message())) {
+                        $response = print_r($response->get_error_message(), 1);
+                    } else {
+                        $response = $response->get_error_message();
+                    }
+
+                    echo "<div class='error'><p>" . sprintf(__('<strong>SMS was not delivered! results received:</strong> %s', 'wp-sms'), $response) . "</p></div>";
+                } else {
+                    echo "<div class='updated'><p>" . __('SMS was sent with success', 'wp-sms') . "</p></div>";
+                    update_option('wp_last_credit', $this->sms->GetCredit());
+                }
+            } else {
+                echo "<div class='error'><p>" . __('Please enter a message', 'wp-sms') . "</p></div>";
+            }
+        }
+
+        include_once dirname(__FILE__) . "/includes/templates/outbox/send-sms.php";
+    }
+
+    /**
+     * Outbox sms admin page
+     *
+     * @param  Not param
+     */
+    public function outbox_page() {
+        include_once dirname(__FILE__) . '/includes/class-wp-k5n-outbox.php';
+
+        //Create an instance of our package class...
+        $list_table = new WP_K5N_Outbox_List_Table();
+
+        //Fetch, prepare, sort, and filter our data...
+        $list_table->prepare_items();
+
+        include_once dirname(__FILE__) . "/includes/templates/outbox/outbox.php";
     }
 
     /**
