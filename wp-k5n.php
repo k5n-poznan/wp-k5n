@@ -113,7 +113,7 @@ class WP_K5N_Plugin {
 
         $this->includes();
         $this->msg = $k5nmsg;
-        
+
         $this->setting_page = new WP_K5N_Settings();
 
 
@@ -127,11 +127,12 @@ class WP_K5N_Plugin {
 
         add_action('admin_bar_menu', array($this, 'adminbar'));
         add_action('dashboard_glance_items', array($this, 'dashboard_glance'));
+        add_action('admin_menu', array($this, 'admin_menu'));
         add_filter('plugin_row_meta', array($this, 'meta_links'), 0, 2);
 
-        add_action('admin_menu', array($this, 'admin_menu'));
-
         add_action('widgets_init', array($this, 'register_widget'));
+
+        add_filter('wp_k5n_message_to', array($this, 'modify_to_send'));
     }
 
     public function meta_links($links, $file) {
@@ -200,6 +201,7 @@ class WP_K5N_Plugin {
         $files = array(
             'includes/class-wp-k5n-settings',
             'includes/class-wp-k5n-version',
+            'includes/class-wp-k5n-notifications',
             'includes/class-wp-k5n-features',
             'includes/class-wp-k5n-subscribers',
             'includes/class-wp-k5n-newsletter',
@@ -325,6 +327,17 @@ class WP_K5N_Plugin {
      */
     public function register_widget() {
         register_widget('WPK5N_Subscribe_Widget');
+    }
+
+    /**
+     * Modify destination number
+     *
+     * @param  array $to
+     *
+     * @return array/string
+     */
+    public function modify_to_send($to) {
+        return $to;
     }
 
     /**

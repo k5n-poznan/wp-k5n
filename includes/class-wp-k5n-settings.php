@@ -19,7 +19,7 @@ class WP_K5N_Settings {
 
         //add_action('admin_menu', array(&$this, 'add_settings_menu'), 11);
 
-        if (isset($_GET['page']) and ($_GET['page'] == 'wp-k5n-settings' or $_GET['page'] == 'wp-k5n') or isset($_POST['option_page']) and $_POST['option_page'] == 'wpk5n_settings') {
+        if (isset($_GET['page']) and ( $_GET['page'] == 'wp-k5n-settings' or $_GET['page'] == 'wp-k5n') or isset($_POST['option_page']) and $_POST['option_page'] == 'wpk5n_settings') {
             add_action('admin_init', array(&$this, 'register_settings'));
         }
     }
@@ -100,6 +100,7 @@ class WP_K5N_Settings {
         $tabs = array(
             'general' => __('Podstawowe', 'wp-k5n'),
             'feature' => __('Parametry', 'wp-k5n'),
+            'notifications' => __('Powiadomienia', 'wp-k5n'),
         );
 
         return $tabs;
@@ -220,7 +221,32 @@ class WP_K5N_Settings {
                     'desc' => __('Add WP-K5N endpoints to the WP Rest API', 'wp-k5n')
                 ),
             )),
-                ));
+            // Notifications tab
+            'notifications' => apply_filters('wp_k5n_notifications_settings', array(
+                // Publish new post
+                'notif_publish_new_post_title' => array(
+                    'id' => 'notif_publish_new_post_title',
+                    'name' => __('Publikacja wpisu', 'wp-k5n'),
+                    'type' => 'header'
+                ),
+                'notif_publish_new_post' => array(
+                    'id' => 'notif_publish_new_post',
+                    'name' => __('Status', 'wp-k5n'),
+                    'type' => 'checkbox',
+                    'options' => $options,
+                    'desc' => __('Wyślij powiadomienie do subskrybentów k5n po publikacji nowego postu.', 'wp-k5n')
+                ),
+                'notif_publish_new_post_template' => array(
+                    'id' => 'notif_publish_new_post_template',
+                    'name' => __('Wzór komunikatu', 'wp-k5n'),
+                    'type' => 'textarea',
+                    'desc' => __('Wprowadź wzór wysyłanego komunikatu.', 'wp-k5n') . '<br>' .
+                    sprintf(
+                            __('Tytuł wpisu: %s, Treść wpisu: %s, Adres url: %s, Data wpisu: %s', 'wp-k5n'), '<code>%post_title%</code>', '<code>%post_content%</code>', '<code>%post_url%</code>', '<code>%post_date%</code>'
+                    )
+                ),
+            )),
+        ));
 
         return $settings;
     }
@@ -473,41 +499,41 @@ class WP_K5N_Settings {
         ob_start();
         ?>
         <div class="wrap wpk5n-settings-wrap">
-        <?php do_action('wp_k5n_settings_page'); ?>
+            <?php do_action('wp_k5n_settings_page'); ?>
             <h2><?php _e('Ustawienia', 'wp-k5n') ?></h2>
             <div class="wpk5n-tab-group">
                 <ul class="wpk5n-tab">
                     <li id="wpk5n-logo">
                         <img src="<?php echo WP_K5N_DIR_PLUGIN; ?>assets/images/logo-200.png"/>
                         <p><?php echo sprintf(__('WP-K5N v%s', 'wp-k5n'), WP_K5N_VERSION); ?></p>
-        <?php do_action('wp_k5n_after_setting_logo'); ?>
+                        <?php do_action('wp_k5n_after_setting_logo'); ?>
                     </li>
-        <?php
-        foreach ($this->get_tabs() as $tab_id => $tab_name) {
+                    <?php
+                    foreach ($this->get_tabs() as $tab_id => $tab_name) {
 
-            $tab_url = add_query_arg(array(
-                'settings-updated' => false,
-                'tab' => $tab_id
-                    ));
+                        $tab_url = add_query_arg(array(
+                            'settings-updated' => false,
+                            'tab' => $tab_id
+                        ));
 
-            $active = $active_tab == $tab_id ? 'active' : '';
+                        $active = $active_tab == $tab_id ? 'active' : '';
 
-            echo '<li><a href="' . esc_url($tab_url) . '" title="' . esc_attr($tab_name) . '" class="' . $active . '">';
-            echo $tab_name;
-            echo '</a></li>';
-        }
-        ?>
+                        echo '<li><a href="' . esc_url($tab_url) . '" title="' . esc_attr($tab_name) . '" class="' . $active . '">';
+                        echo $tab_name;
+                        echo '</a></li>';
+                    }
+                    ?>
                 </ul>
-                    <?php echo settings_errors('wpk5n-notices'); ?>
+                <?php echo settings_errors('wpk5n-notices'); ?>
                 <div class="wpk5n-tab-content">
                     <form method="post" action="options.php">
                         <table class="form-table">
-                    <?php
-                    settings_fields($this->setting_name);
-                    do_settings_fields('wpk5n_settings_' . $active_tab, 'wpk5n_settings_' . $active_tab);
-                    ?>
+                            <?php
+                            settings_fields($this->setting_name);
+                            do_settings_fields('wpk5n_settings_' . $active_tab, 'wpk5n_settings_' . $active_tab);
+                            ?>
                         </table>
-                    <?php submit_button(); ?>
+                        <?php submit_button(); ?>
                     </form>
                 </div>
             </div>
@@ -517,5 +543,3 @@ class WP_K5N_Settings {
     }
 
 }
-
-
