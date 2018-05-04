@@ -156,6 +156,7 @@ class WP_K5N_Plugin {
 
         dbDelta($create_k5n_subscribes);
         dbDelta($create_k5n_subscribes_group);
+        dbDelta($create_k5n_outbox);
 
         add_option('$wp_k5n_db_version', WP_K5N_VERSION);
 

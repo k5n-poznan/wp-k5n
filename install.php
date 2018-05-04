@@ -19,3 +19,13 @@ $create_k5n_subscribes_group = ( "CREATE TABLE IF NOT EXISTS {$table_prefix}k5n_
 	name VARCHAR(250),
 	PRIMARY KEY(ID)) CHARSET=utf8
 " );
+
+$create_k5n_outbox = ( "CREATE TABLE IF NOT EXISTS {$table_prefix}k5n_sms_outbox(
+	ID int(10) NOT NULL auto_increment,
+	date DATETIME,
+	sender VARCHAR(20) NOT NULL,
+	message TEXT NOT NULL,
+	recipient TEXT NOT NULL,
+	status tinyint(1),
+	PRIMARY KEY(ID)) CHARSET=utf8
+" );

@@ -26,17 +26,17 @@
 </p>
 
 <p>
-    <input class="checkbox" id="<?php echo $this->get_field_id('send_welcome_k5n'); ?>"
-           name="<?php echo $this->get_field_name('send_welcome_k5n'); ?>" type="checkbox"
+    <input class="checkbox" id="<?php echo $this->get_field_id('send_welcome_sms'); ?>"
+           name="<?php echo $this->get_field_name('send_welcome_sms'); ?>" type="checkbox"
            value="1" <?php checked($send_welcome_k5n, 1); ?>>
-    <label for="<?php echo $this->get_field_id('send_welcome_k5n'); ?>"><?php _e('Wyślij powitalny SMS', 'wp-k5n'); ?></label>
+    <label for="<?php echo $this->get_field_id('send_welcome_sms'); ?>"><?php _e('Wyślij powitalny SMS', 'wp-k5n'); ?></label>
 </p>
 
-<?php if ($send_welcome_k5n) : ?>
+<?php if ($send_welcome_sms) : ?>
     <p>
-        <label for="<?php echo $this->get_field_id('welcome_k5n_template'); ?>"><?php _e('Tekst powitalnego SMS', 'wp-k5n'); ?></label>
-        <textarea class="widefat" id="<?php echo $this->get_field_id('welcome_k5n_template'); ?>"
-                  name="<?php echo $this->get_field_name('welcome_k5n_template'); ?>"><?php echo esc_attr($welcome_k5n_template); ?></textarea>
+        <label for="<?php echo $this->get_field_id('welcome_sms_template'); ?>"><?php _e('Tekst powitalnego SMS', 'wp-k5n'); ?></label>
+        <textarea class="widefat" id="<?php echo $this->get_field_id('welcome_sms_template'); ?>"
+                  name="<?php echo $this->get_field_name('welcome_sms_template'); ?>"><?php echo esc_attr($welcome_sms_template); ?></textarea>
     <p class="description">
         <?php echo sprintf(__('Imie: %s, Nazwisko: %s, Nr telefonu: %s', 'wp-k5n'), '<code>%subscribe_name%</code>', '<code>%subscribe_surname%</code>', '<code>%subscribe_mobile%</code>'); ?>
     </p>

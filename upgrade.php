@@ -27,10 +27,21 @@ if (is_admin()) {
 				PRIMARY KEY(ID)) CHARSET=utf8
 			" );
 
+        $create_k5n_outbox = ( "CREATE TABLE {$table_prefix}k5n_sms_outbox(
+				ID int(10) NOT NULL auto_increment,
+				date DATETIME,
+				sender VARCHAR(20) NOT NULL,
+				message TEXT NOT NULL,
+				recipient TEXT NOT NULL,
+                                status tinyint(1),
+				PRIMARY KEY(ID)) CHARSET=utf8
+			" );
+
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         dbDelta($create_k5n_subscribes);
         dbDelta($create_k5n_subscribes_group);
+        dbDelta($create_k5n_outbox);
 
         update_option('wp_k5n_db_version', WP_K5N_VERSION);
     }
