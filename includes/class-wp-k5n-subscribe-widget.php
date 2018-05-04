@@ -10,11 +10,11 @@ class WPK5N_Subscribe_Widget extends WP_Widget {
      */
     public function __construct() {
         $widget_options = array(
-            'classname' => 'wpk5n_widget',
+            'classname' => 'wpk5n_subscribe_widget',
             'description' => __('Formularz biuletynu K5N', 'wp-k5n'),
         );
 
-        parent::__construct('wpk5n_widget', __('Biuletyn K5N', 'wp-k5n'), $widget_options);
+        parent::__construct('wpk5n_subscribe_widget', __('Biuletyn K5N', 'wp-k5n'), $widget_options);
     }
 
     /**

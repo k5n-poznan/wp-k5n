@@ -85,7 +85,7 @@ class WP_K5N_Newsletter {
         }
 
         // Get widget option
-        $get_widget = get_option('widget_wpk5n_widget');
+        $get_widget = get_option('widget_wpk5n_subscribe_widget');
         $widget_options = $get_widget[$_POST['widget_id']];
 
         // Check current widget
@@ -261,7 +261,7 @@ class WP_K5N_Newsletter {
         }
 
         // Get widget option
-        $get_widget = get_option('widget_wpk5n_widget');
+        $get_widget = get_option('widget_wpk5n_subscribe_widget');
         $widget_options = $get_widget[$_POST['widget_id']];
 
         // Check current widget

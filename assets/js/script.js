@@ -11,12 +11,12 @@ jQuery(document).ready(function ($) {
 
         $("#wpk5n-subscribe").ajaxStart(function () {
             $("#wpk5n-submit").attr('disabled', 'disabled');
-            $("#wpk5n-submit").text("Loading...");
+            $("#wpk5n-submit").text("Przetwarzanie...");
         });
 
         $("#wpk5n-subscribe").ajaxComplete(function () {
             $("#wpk5n-submit").removeAttr('disabled');
-            $("#wpk5n-submit").text("Subscribe");
+            $("#wpk5n-submit").text("Wyślij");
         });
 
         $.post(ajax_object.ajaxurl, {
