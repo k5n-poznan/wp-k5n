@@ -25,7 +25,11 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
         switch ($column_name) {
             case 'date':
             case 'send':
-                return sprintf(__('%s <span class="wpk5n-time">Czas: %s</span>', 'wp-k5n'), date_i18n('Y-m-d', strtotime($item[$column_name])), date_i18n('H:i:s', strtotime($item[$column_name])));
+                if (empty($item[$column_name])) {
+                    return;
+                } else {
+                    return sprintf(__('%s <span class="wpk5n-time">Czas: %s</span>', 'wp-k5n'), date_i18n('Y-m-d', strtotime($item[$column_name])), date_i18n('H:i:s', strtotime($item[$column_name])));
+                }
             case 'message':
             case 'recipient':
             case 'sender':
