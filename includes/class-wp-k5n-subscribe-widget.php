@@ -5,10 +5,22 @@
  */
 class WPK5N_Subscribe_Widget extends WP_Widget {
 
+
+    /**
+     * WP K5N subscribe object
+     *
+     * @var string
+     */
+    public $subscribe;
+    
+    
     /**
      * Register widget with WordPress.
      */
     public function __construct() {
+
+        $this->subscribe = new WP_K5N_Subscriptions();
+
         $widget_options = array(
             'classname' => 'wpk5n_subscribe_widget',
             'description' => __('Formularz biuletynu K5N', 'wp-k5n'),
@@ -54,9 +66,11 @@ class WPK5N_Subscribe_Widget extends WP_Widget {
         $title = !empty($instance['title']) ? $instance['title'] : __('Biuletyn K5N', 'wp-k5n');
         $description = !empty($instance['description']) ? $instance['description'] : '';
         $show_group = !empty($instance['show_group']) ? $instance['show_group'] : '';
+        $default_group = !empty($instance['default_group']) ? $instance['default_group'] : '';
         $send_activation_code = !empty($instance['send_activation_code']) ? $instance['send_activation_code'] : '';
-        $send_welcome_k5n = !empty($instance['send_welcome_k5n']) ? $instance['send_welcome_k5n'] : '';
-        $welcome_k5n_template = !empty($instance['welcome_k5n_template']) ? $instance['welcome_k5n_template'] : '';
+        $default_active = !empty($instance['default_active']) ? $instance['default_active'] : '';
+        $send_welcome_sms = !empty($instance['send_welcome_sms']) ? $instance['send_welcome_sms'] : '';
+        $welcome_sms_template = !empty($instance['welcome_sms_template']) ? $instance['welcome_sms_template'] : '';
         $mobile_number_terms = !empty($instance['mobile_number_terms']) ? $instance['mobile_number_terms'] : '';
         $mobile_field_placeholder = !empty($instance['mobile_field_placeholder']) ? $instance['mobile_field_placeholder'] : '';
         $mobile_field_max = !empty($instance['mobile_field_max']) ? $instance['mobile_field_max'] : '';
@@ -81,9 +95,11 @@ class WPK5N_Subscribe_Widget extends WP_Widget {
         $instance['title'] = (!empty($new_instance['title']) ) ? strip_tags($new_instance['title']) : '';
         $instance['description'] = (!empty($new_instance['description']) ) ? $new_instance['description'] : '';
         $instance['show_group'] = (!empty($new_instance['show_group']) ) ? $new_instance['show_group'] : '';
+        $instance['default_group'] = (!empty($new_instance['default_group']) ) ? $new_instance['default_group'] : '';
+        $instance['default_active'] = (!empty($new_instance['default_active']) ) ? $new_instance['default_active'] : '';
         $instance['send_activation_code'] = (!empty($new_instance['send_activation_code']) ) ? $new_instance['send_activation_code'] : '';
-        $instance['send_welcome_k5n'] = (!empty($new_instance['send_welcome_k5n']) ) ? $new_instance['send_welcome_k5n'] : '';
-        $instance['welcome_k5n_template'] = (!empty($new_instance['welcome_k5n_template']) ) ? $new_instance['welcome_k5n_template'] : '';
+        $instance['send_welcome_sms'] = (!empty($new_instance['send_welcome_sms']) ) ? $new_instance['send_welcome_sms'] : '';
+        $instance['welcome_sms_template'] = (!empty($new_instance['welcome_sms_template']) ) ? $new_instance['welcome_sms_template'] : '';
         $instance['mobile_number_terms'] = (!empty($new_instance['mobile_number_terms']) ) ? $new_instance['mobile_number_terms'] : '';
         $instance['mobile_field_placeholder'] = (!empty($new_instance['mobile_field_placeholder']) ) ? $new_instance['mobile_field_placeholder'] : '';
         $instance['mobile_field_max'] = (!empty($new_instance['mobile_field_max']) ) ? $new_instance['mobile_field_max'] : '';

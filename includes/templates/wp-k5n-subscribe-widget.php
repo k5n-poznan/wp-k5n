@@ -18,6 +18,24 @@
     <label for="<?php echo $this->get_field_id('show_group'); ?>"><?php _e('Pokaż grupę', 'wp-k5n'); ?></label>
 </p>
 
+<?php if (!$show_group) : ?>
+    <?php if ($this->subscribe->get_groups()): ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('default_group'); ?>"><?php _e('Domyślna Grupa', 'wp-k5n'); ?></label>
+            <select name="<?php echo $this->get_field_name('default_group'); ?>" id="<?php echo $this->get_field_id('default_group'); ?>">
+                <?php foreach ($this->subscribe->get_groups() as $items): ?>
+                    <option value="<?php echo $items->ID; ?>" <?php selected($default_group, $items->ID); ?>><?php echo $items->name; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </p>
+    <?php else: ?>
+        <p>
+            <label><?php _e('Domyślna Grupa', 'wp-k5n'); ?></label>
+            <?php echo sprintf(__('Nie dopisano grup subskrypcji! <a href="%s">Dodaj</a>', 'wp-k5n'), 'admin.php?page=wp-k5n-subscribers-group'); ?>
+        </p>
+    <?php endif; ?>
+<?php endif; ?>
+
 <p>
     <input class="checkbox" id="<?php echo $this->get_field_id('send_activation_code'); ?>"
            name="<?php echo $this->get_field_name('send_activation_code'); ?>" type="checkbox"
@@ -25,10 +43,19 @@
     <label for="<?php echo $this->get_field_id('send_activation_code'); ?>"><?php _e('Weryfikacja kodem aktywacyjnym', 'wp-k5n'); ?></label>
 </p>
 
+<?php if (!$send_activation_code) : ?>
+    <p>
+        <input class="checkbox" id="<?php echo $this->get_field_id('default_active'); ?>"
+               name="<?php echo $this->get_field_name('default_active'); ?>" type="checkbox"
+               value="1" <?php checked($default_active, 1); ?>>
+        <label for="<?php echo $this->get_field_id('default_active'); ?>"><?php _e('Automatycznie aktywuj subskrybenta', 'wp-k5n'); ?></label>
+    </p>
+<?php endif; ?>
+
 <p>
     <input class="checkbox" id="<?php echo $this->get_field_id('send_welcome_sms'); ?>"
            name="<?php echo $this->get_field_name('send_welcome_sms'); ?>" type="checkbox"
-           value="1" <?php checked($send_welcome_k5n, 1); ?>>
+           value="1" <?php checked($send_welcome_sms, 1); ?>>
     <label for="<?php echo $this->get_field_id('send_welcome_sms'); ?>"><?php _e('Wyślij powitalny SMS', 'wp-k5n'); ?></label>
 </p>
 

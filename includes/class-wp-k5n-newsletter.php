@@ -107,6 +107,9 @@ class WP_K5N_Newsletter {
         $group = trim($_POST['group']);
         $type = $_POST['type'];
         
+        if (!$widget_options['show_group']) {
+           $group = $widget_options['default_group']; 
+        }
 
         if (!$name or ! $surname or ! $mobile) {
             // Return response
@@ -206,13 +209,14 @@ class WP_K5N_Newsletter {
                 }
 
                 // Send welcome message
-                if ($widget_options['send_welcome_k5n']) {
+                if ($widget_options['send_welcome_sms']) {
                     $template_vars = array(
                         '%subscribe_name%' => $name,
+                        '%subscribe_surname%' => $surname,
                         '%subscribe_mobile%' => $mobile,
                     );
 
-                    $message = str_replace(array_keys($template_vars), array_values($template_vars), $widget_options['welcome_k5n_template']);
+                    $message = str_replace(array_keys($template_vars), array_values($template_vars), $widget_options['welcome_sms_template']);
 
 //                    $this->register->to = array($mobile);
 //                    $this->register->msg = $message;
