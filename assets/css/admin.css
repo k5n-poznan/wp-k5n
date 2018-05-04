@@ -139,3 +139,19 @@
 .wpk5n-tab-content .form-table th {
     width: 150px;
 }
+
+.wpk5n-outbox .column-status {
+    width: 8%;
+}
+
+.wpk5n-outbox .column-send {
+    width: 10%;
+}
+
+.wpk5n-outbox .column-sender {
+    width: 15%;
+}
+
+.wpk5n-outbox .column-recipient {
+    width: 20%;
+}

@@ -24,10 +24,11 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
     function column_default($item, $column_name) {
         switch ($column_name) {
             case 'date':
+            case 'send':
                 return sprintf(__('%s <span class="wpk5n-time">Czas: %s</span>', 'wp-k5n'), date_i18n('Y-m-d', strtotime($item[$column_name])), date_i18n('H:i:s', strtotime($item[$column_name])));
-
             case 'message':
             case 'recipient':
+            case 'sender':
                 return $item[$column_name];
 
             case 'status':
@@ -38,7 +39,7 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
         }
     }
 
-    function column_sender($item) {
+    function column_message($item) {
 
         //Build row actions
         $actions = array(
@@ -47,8 +48,8 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
         );
 
         //Return the title contents
-        return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-                /* $1%s */ $item['date'],
+        return sprintf('%1$s <span style="color:silver">(id:%2$s)</span> %3$s',
+                /* $1%s */ $item['message'],
                 /* $2%s */ $item['ID'],
                 /* $3%s */ $this->row_actions($actions)
         );
@@ -65,9 +66,11 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
     function get_columns() {
         $columns = array(
             'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-            'date' => __('Data', 'wp-k5n'),
             'message' => __('Komunikat', 'wp-k5n'),
             'status' => __('Status', 'wp-k5n'),
+            'date' => __('Data', 'wp-k5n'),
+            'send' => __('Wysłane', 'wp-k5n'),
+            'sender' => __('Wysłane przez', 'wp-k5n'),
             'recipient' => __('Odbiorca', 'wp-k5n'),
         );
 
@@ -77,9 +80,11 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
     function get_sortable_columns() {
         $sortable_columns = array(
             'ID' => array('ID', true), //true means it's already sorted
-            'date' => array('date', false),
             'message' => array('message', false),
             'status' => array('status', false),
+            'date' => array('date', false),
+            'send' => array('send', false),
+            'sender' => array('sender', false),
             'recipient' => array('recipient', false)
         );
 
@@ -100,7 +105,7 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
         //Detect when a bulk action is being triggered...
         // Search action
         if (isset($_GET['s'])) {
-            $this->data = $wpdb->get_results($wpdb->prepare("SELECT * from `{$table_prefix}k5n_send` WHERE message LIKE %s OR recipient LIKE %s;", '%' . $wpdb->esc_like($_GET['s']) . '%', '%' . $wpdb->esc_like($_GET['s']) . '%'), ARRAY_A);
+            $this->data = $wpdb->get_results($wpdb->prepare("SELECT * from `{$table_prefix}k5n_sms_outbox` WHERE message LIKE %s OR recipient LIKE %s;", '%' . $wpdb->esc_like($_GET['s']) . '%', '%' . $wpdb->esc_like($_GET['s']) . '%'), ARRAY_A);
         }
 
         // Bulk delete action
@@ -115,8 +120,8 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
 
         // Single delete action
         if ('delete' == $this->current_action()) {
-            $wpdb->delete($table_prefix . "k5n_send", array('ID' => $_GET['ID']));
-            $this->data = $wpdb->get_results("SELECT * FROM `{$table_prefix}k5n_send`", ARRAY_A);
+            $wpdb->delete($table_prefix . "k5n_sms_outbox", array('ID' => $_GET['ID']));
+            $this->data = $wpdb->get_results("SELECT * FROM `{$table_prefix}k5n_sms_outbox`", ARRAY_A);
             echo '<div class="updated notice is-dismissible below-h2"><p>' . __('Item removed.', 'wp-k5n') . '</p></div>';
         }
 
