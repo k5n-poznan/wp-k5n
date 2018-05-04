@@ -84,9 +84,11 @@ class WP_K5N_Newsletter {
             die('Busted!');
         }
 
+        $widgetid = $_POST['widgetid'];
+        
         // Get widget option
         $get_widget = get_option('widget_wpk5n_subscribe_widget');
-        $widget_options = $get_widget[$_POST['widget_id']];
+        $widget_options = $get_widget[$widgetid];
 
         // Check current widget
         if (!isset($widget_options)) {
@@ -104,6 +106,7 @@ class WP_K5N_Newsletter {
         $mobile = trim($_POST['mobile']);
         $group = trim($_POST['group']);
         $type = $_POST['type'];
+        
 
         if (!$name or ! $surname or ! $mobile) {
             // Return response
@@ -171,7 +174,7 @@ class WP_K5N_Newsletter {
 //                $this->register->SendSMS();
 
                 // Add subscribe to database
-                $result = $this->subscribe->add_subscriber($name, $mobile, $group, '0', $key);
+                $result = $this->subscribe->add_subscriber($name, $surname, $mobile, $group, '0', $key);
 
                 if ($result['result'] == 'error') {
                     // Return response
@@ -192,7 +195,7 @@ class WP_K5N_Newsletter {
             } else {
 
                 // Add subscribe to database
-                $result = $this->subscribe->add_subscriber($name, $mobile, $group, '1');
+                $result = $this->subscribe->add_subscriber($name, $surname, $mobile, $group, '1');
 
                 if ($result['result'] == 'error') {
                     // Return response
@@ -263,7 +266,7 @@ class WP_K5N_Newsletter {
 
         // Get widget option
         $get_widget = get_option('widget_wpk5n_subscribe_widget');
-        $widget_options = $get_widget[$_POST['widget_id']];
+        $widget_options = $get_widget[$_POST['widgetid']];
 
         // Check current widget
         if (!isset($widget_options)) {

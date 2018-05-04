@@ -93,7 +93,8 @@ class WPK5N_Subscribe_Widget extends WP_Widget {
     }
 
     public function get_numerics($str) {
-        preg_match('/\d+/', $str, $matches);
+        $rest = substr($str, 6);
+        preg_match('/\d+/', $rest, $matches);
 
         return $matches[0];
     }

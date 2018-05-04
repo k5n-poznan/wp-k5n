@@ -8,6 +8,8 @@ jQuery(document).ready(function ($) {
         subscriber['mobile'] = $("#wpk5n-subscribe-mobile").val();
         subscriber['groups'] = $("#wpk5n-subscribe-groups").val();
         subscriber['type'] = $('input[name=subscribe_type]:checked').val();
+        
+        var widget_id = $('#wpk5n-widget-id').attr('value');
 
         $("#wpk5n-subscribe").ajaxStart(function () {
             $("#wpk5n-subscribe-submit").attr('disabled', 'disabled');
@@ -20,8 +22,8 @@ jQuery(document).ready(function ($) {
         });
 
         $.post(ajax_object.ajaxurl, {
-            widget_id: $('#wpk5n-widget-id').attr('value'),
             action: 'subscribe_ajax_action',
+            widgetid: widget_id,
             name: subscriber['name'],
             surname: subscriber['surname'],
             mobile: subscriber['mobile'],
@@ -55,6 +57,8 @@ jQuery(document).ready(function ($) {
         $("#wpk5n-subscribe-result").hide();
         subscriber['activation'] = $("#wpk5n-ativation-code").val();
 
+        var widget_id = $('#wpk5n-widget-id').attr('value');
+
         $("#wpk5n-subscribe").ajaxStart(function () {
             $("#activation").attr('disabled', 'disabled');
             $("#activation").text('Przetwarzanie...');
@@ -66,8 +70,8 @@ jQuery(document).ready(function ($) {
         });
 
         $.post(ajax_object.ajaxurl, {
-            widget_id: $('#wpk5n-subscribe-widget-id').attr('value'),
             action: 'activation_ajax_action',
+            widgetid: widget_id,
             mobile: subscriber['mobile'],
             activation: subscriber['activation'],
             nonce: ajax_object.nonce
