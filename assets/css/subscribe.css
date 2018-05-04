@@ -37,15 +37,15 @@
     top: 1px;
 }
 
-#wpk5n-step-1 {
+#wpk5n-subscribe-step-1 {
 
 }
 
-#wpk5n-step-2 {
+#wpk5n-subscribe-step-2 {
     display: none;
 }
 
-#wpk5n-result {
+#wpk5n-subscribe-result {
     display: inline-flex;
     margin: 0 0 7px;
     width: 100%;
