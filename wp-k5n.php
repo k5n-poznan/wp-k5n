@@ -119,13 +119,14 @@ class WP_K5N_Plugin {
         add_filter('plugin_row_meta', array($this, 'meta_links'), 0, 2);
 
         add_action('admin_menu', array($this, 'admin_menu'));
+
+        add_action('widgets_init', array($this, 'register_widget'));
     }
 
     public function meta_links($links, $file) {
         if ($file == 'wp-k5n/wp-k5n.php') {
 //            $rate_url = 'http://wordpress.org/support/view/plugin-reviews/wp-k5n?rate=5#postform';
 //            $links[] = '<a href="' . $rate_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Rate this plugin', 'wp-k5n') . '</a>';
-
 //            $newsletter_url = WP_K5N_SITE . '/newsletter';
 //            $links[] = '<a href="' . $newsletter_url . '" target="_blank" class="wpk5n-plugin-meta-link" title="' . __('Click here to rate and review this plugin on WordPress.org', 'wp-k5n') . '">' . __('Subscribe to our Phone Newsletter', 'wp-k5n') . '</a>';
         }
@@ -187,6 +188,8 @@ class WP_K5N_Plugin {
             'includes/class-wp-k5n-version',
             'includes/class-wp-k5n-features',
             'includes/class-wp-k5n-subscribers',
+            'includes/class-wp-k5n-newsletter',
+            'includes/class-wp-k5n-subscribe-widget',
         );
 
         foreach ($files as $file) {
@@ -220,6 +223,11 @@ class WP_K5N_Plugin {
     public function admin_assets() {
         wp_register_style('wpk5n-admin-css', plugin_dir_url(__FILE__) . 'assets/css/admin.css', true, '1.3');
         wp_enqueue_style('wpk5n-admin-css');
+
+        wp_enqueue_style('wpk5n-chosen-css', plugin_dir_url(__FILE__) . 'assets/css/chosen.min.css', true, '1.2.0');
+        wp_enqueue_script('wpk5n-chosen-js', plugin_dir_url(__FILE__) . 'assets/js/chosen.jquery.min.js', true, '1.2.0');
+        wp_enqueue_script('wpk5n-word-and-character-counter-js', plugin_dir_url(__FILE__) . 'assets/js/jquery.word-and-character-counter.min.js', true, '2.5.0');
+        wp_enqueue_script('wpk5n-admin-js', plugin_dir_url(__FILE__) . 'assets/js/admin.js', true, '1.2.0');
     }
 
     /**
@@ -262,6 +270,13 @@ class WP_K5N_Plugin {
             $this,
             'groups_page'
         ));
+    }
+
+    /**
+     * Register widget
+     */
+    public function register_widget() {
+        register_widget('WPK5N_Subscribe_Widget');
     }
 
     /**

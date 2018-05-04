@@ -69,7 +69,7 @@ class WP_K5N_Newsletter {
         // Ajax params
         wp_localize_script('ajax-script', 'ajax_object', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wpsms-nonce')
+            'nonce' => wp_create_nonce('wpk5n-nonce')
         ));
     }
 
@@ -79,7 +79,7 @@ class WP_K5N_Newsletter {
     public function subscribe_ajax_action_handler() {
         // Check nonce
         $nonce = $_POST['nonce'];
-        if (!wp_verify_nonce($nonce, 'wpsms-nonce')) {
+        if (!wp_verify_nonce($nonce, 'wpk5n-nonce')) {
             // Stop executing script
             die('Busted!');
         }
@@ -92,7 +92,7 @@ class WP_K5N_Newsletter {
         if (!isset($widget_options)) {
             // Return response
             echo json_encode(array('status' => 'error',
-                'response' => __('Params does not found! please refresh the current page!', 'wp-k5n')
+                'response' => __('Brak parametrów! Proszę odświerzyć bieżącą stronę!', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -107,7 +107,7 @@ class WP_K5N_Newsletter {
         if (!$name or ! $mobile) {
             // Return response
             echo json_encode(array('status' => 'error',
-                'response' => __('Please complete all fields', 'wp-k5n')
+                'response' => __('Proszę wypełnić wszystkie pola', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -117,7 +117,7 @@ class WP_K5N_Newsletter {
         if (preg_match(WP_K5N_MOBILE_REGEX, $mobile) == false) {
             // Return response
             echo json_encode(array('status' => 'error',
-                'response' => __('Please enter a valid mobile number', 'wp-k5n')
+                'response' => __('Proszę wprowadzić prawidłowy numer telefonu', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -129,7 +129,7 @@ class WP_K5N_Newsletter {
                 if (strlen($mobile) > $widget_options['mobile_field_max']) {
                     // Return response
                     echo json_encode(array('status' => 'error',
-                        'response' => sprintf(__('Your mobile number should be less than %s digits', 'wp-k5n'), $widget_options['mobile_field_max'])
+                        'response' => sprintf(__('Twój numer telefonu powinien mieć poniżej %s cyfr', 'wp-k5n'), $widget_options['mobile_field_max'])
                     ));
 
                     // Stop executing script
@@ -141,7 +141,7 @@ class WP_K5N_Newsletter {
                 if (strlen($mobile) < $widget_options['mobile_field_min']) {
                     // Return response
                     echo json_encode(array('status' => 'error',
-                        'response' => sprintf(__('Your mobile number should be greater than %s digits', 'wp-k5n'), $widget_options['mobile_field_min'])
+                        'response' => sprintf(__('Twój numer telefonu powinien mieć ponad %s cyfr', 'wp-k5n'), $widget_options['mobile_field_min'])
                     ));
 
                     // Stop executing script
@@ -157,7 +157,7 @@ class WP_K5N_Newsletter {
                 if (!$this->options['gateway_name']) {
                     // Return response
                     echo json_encode(array('status' => 'error',
-                        'response' => __('Service provider is not available for send activate key to your mobile. Please contact with site.', 'wp-k5n')
+                        'response' => __('Usługodawca nie jest dostępny do wysyłania klucza aktywacji do telefonu komórkowego. Skontaktuj się z administratorem strony.', 'wp-k5n')
                     ));
 
                     // Stop executing script
@@ -165,9 +165,9 @@ class WP_K5N_Newsletter {
                 }
 
                 $key = rand(1000, 9999);
-                $this->sms->to = array($mobile);
-                $this->sms->msg = __('Your activation code', 'wp-k5n') . ': ' . $key;
-                $this->sms->SendSMS();
+//                $this->k5n->to = array($mobile);
+//                $this->k5n->msg = __('Your activation code', 'wp-k5n') . ': ' . $key;
+//                $this->k5n->SendSMS();
 
                 // Add subscribe to database
                 $result = $this->subscribe->add_subscriber($name, $mobile, $group, '0', $key);
@@ -182,7 +182,7 @@ class WP_K5N_Newsletter {
 
                 // Return response
                 echo json_encode(array('status' => 'success',
-                    'response' => __('You will join the newsletter, Activation code sent to your mobile.', 'wp-k5n'),
+                    'response' => __('Dołączasz do newslettera, kod aktywacyjny wysyłany na telefon komórkowy.', 'wp-k5n'),
                     'action' => 'activation'
                 ));
 
@@ -202,7 +202,7 @@ class WP_K5N_Newsletter {
                 }
 
                 // Send welcome message
-                if ($widget_options['send_welcome_sms']) {
+                if ($widget_options['send_welcome_k5n']) {
                     $template_vars = array(
                         '%subscribe_name%' => $name,
                         '%subscribe_mobile%' => $mobile,
@@ -210,14 +210,14 @@ class WP_K5N_Newsletter {
 
                     $message = str_replace(array_keys($template_vars), array_values($template_vars), $widget_options['welcome_k5n_template']);
 
-                    $this->sms->to = array($mobile);
-                    $this->sms->msg = $message;
-                    $this->sms->SendSMS();
+//                    $this->k5n->to = array($mobile);
+//                    $this->k5n->msg = $message;
+//                    $this->k5n->SendSMS();
                 }
 
                 // Return response
                 echo json_encode(array('status' => 'success',
-                    'response' => __('You will join the newsletter', 'wp-k5n')
+                    'response' => __('Wiadomości będą przysyłane na podany nr telefonu', 'wp-k5n')
                 ));
 
                 // Stop executing script
@@ -238,7 +238,7 @@ class WP_K5N_Newsletter {
 
             // Return response
             echo json_encode(array('status' => 'success',
-                'response' => __('Your subscription was canceled.', 'wp-k5n')
+                'response' => __('Zrezygnowałeś z wiadomości od K5N.', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -255,7 +255,7 @@ class WP_K5N_Newsletter {
     public function activation_ajax_action_handler() {
         // Check nonce
         $nonce = $_POST['nonce'];
-        if (!wp_verify_nonce($nonce, 'wpsms-nonce')) {
+        if (!wp_verify_nonce($nonce, 'wpk5n-nonce')) {
             // Stop executing script
             die('Busted!');
         }
@@ -268,7 +268,7 @@ class WP_K5N_Newsletter {
         if (!isset($widget_options)) {
             // Return response
             echo json_encode(array('status' => 'error',
-                'response' => __('Params does not found! please refresh the current page!', 'wp-k5n')
+                'response' => __('Brak parametrów! Proszę odświerzyć bieżącą stronę!', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -280,7 +280,7 @@ class WP_K5N_Newsletter {
 
         if (!$mobile) {
             // Return response
-            echo json_encode(array('status' => 'error', 'response' => __('Mobile number is missing!', 'wp-k5n')));
+            echo json_encode(array('status' => 'error', 'response' => __('Brak numeru telefonu komórkowego!', 'wp-k5n')));
 
             // Stop executing script
             die();
@@ -289,7 +289,7 @@ class WP_K5N_Newsletter {
         if (!$activation) {
             // Return response
             echo json_encode(array('status' => 'error',
-                'response' => __('Please enter the activation code!', 'wp-k5n')
+                'response' => __('Wprowadź kod aktywacyjny!', 'wp-k5n')
             ));
 
             // Stop executing script
@@ -300,7 +300,7 @@ class WP_K5N_Newsletter {
 
         if ($activation != $check_mobile->activate_key) {
             // Return response
-            echo json_encode(array('status' => 'error', 'response' => __('Activation code is wrong!', 'wp-k5n')));
+            echo json_encode(array('status' => 'error', 'response' => __('Kod aktywacyjny jest nieprawidłowy!', 'wp-k5n')));
 
             // Stop executing script
             die();
@@ -311,7 +311,7 @@ class WP_K5N_Newsletter {
         if ($result) {
             // Return response
             echo json_encode(array('status' => 'success',
-                'response' => __('Your subscription was successful!', 'wp-k5n')
+                'response' => __('Subskrypcja w K5N została przyjęta!', 'wp-k5n')
             ));
 
             // Stop executing script
