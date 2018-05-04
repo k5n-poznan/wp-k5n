@@ -203,8 +203,14 @@ class WP_K5N_Newsletter {
                 die();
             } else {
 
+                $status = '0';
+                
+                if($widget_options['default_active']) {
+                    $status = '1';
+                }
+                
                 // Add subscribe to database
-                $result = $this->subscribe->add_subscriber($name, $surname, $mobile, $group, '1');
+                $result = $this->subscribe->add_subscriber($name, $surname, $mobile, $group, $status);
 
                 if ($result['result'] == 'error') {
                     // Return response
