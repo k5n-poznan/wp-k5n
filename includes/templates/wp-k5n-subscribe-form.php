@@ -41,7 +41,7 @@
             </label>
         </div>
 
-        <button class="wpk5n-button" id="wpk5n-submit"><?php _e('Wyślij', 'wp-k5n'); ?></button>
+        <button class="wpk5n-button" id="wpk5n-submit"><?php _e('Rejestruj', 'wp-k5n'); ?></button>
     </div>
 
     <div id="wpk5n-step-2">
@@ -50,7 +50,7 @@
             <input type="text" id="wpk5n-ativation-code" placeholder="<?php _e('Kod aktywacyjny:', 'wp-k5n'); ?>"
                    class="wpk5n-input"/>
         </div>
-        <button class="wpk5n-button" id="activation"><?php _e('Activation', 'wp-k5n'); ?></button>
+        <button class="wpk5n-button" id="activation"><?php _e('Aktywacja', 'wp-k5n'); ?></button>
     </div>
     <input type="hidden" id="wpk5n-widget-id" value="<?php echo $widget_id; ?>">
 </div>

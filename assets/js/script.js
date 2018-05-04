@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
 
         $("#wpk5n-subscribe").ajaxComplete(function () {
             $("#wpk5n-submit").removeAttr('disabled');
-            $("#wpk5n-submit").text("Wyślij");
+            $("#wpk5n-submit").text("Rejestruj");
         });
 
         $.post(ajax_object.ajaxurl, {
@@ -57,12 +57,12 @@ jQuery(document).ready(function ($) {
 
         $("#wpk5n-subscribe").ajaxStart(function () {
             $("#activation").attr('disabled', 'disabled');
-            $("#activation").text('Loading...');
+            $("#activation").text('Przetwarzanie...');
         });
 
         $("#wpk5n-subscribe").ajaxComplete(function () {
             $("#activation").removeAttr('disabled');
-            $("#activation").text('Activation');
+            $("#activation").text('Aktywacja');
         });
 
         $.post(ajax_object.ajaxurl, {

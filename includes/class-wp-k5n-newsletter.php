@@ -100,11 +100,12 @@ class WP_K5N_Newsletter {
         }
 
         $name = trim($_POST['name']);
+        $surname = trim($_POST['surname']);
         $mobile = trim($_POST['mobile']);
         $group = trim($_POST['group']);
         $type = $_POST['type'];
 
-        if (!$name or ! $mobile) {
+        if (!$name or ! $surname or ! $mobile) {
             // Return response
             echo json_encode(array('status' => 'error',
                 'response' => __('Proszę wypełnić wszystkie pola', 'wp-k5n')
@@ -165,9 +166,9 @@ class WP_K5N_Newsletter {
                 }
 
                 $key = rand(1000, 9999);
-//                $this->k5n->to = array($mobile);
-//                $this->k5n->msg = __('Your activation code', 'wp-k5n') . ': ' . $key;
-//                $this->k5n->SendSMS();
+//                $this->register->to = array($mobile);
+//                $this->register->msg = __('Your activation code', 'wp-k5n') . ': ' . $key;
+//                $this->register->SendSMS();
 
                 // Add subscribe to database
                 $result = $this->subscribe->add_subscriber($name, $mobile, $group, '0', $key);
@@ -210,9 +211,9 @@ class WP_K5N_Newsletter {
 
                     $message = str_replace(array_keys($template_vars), array_values($template_vars), $widget_options['welcome_k5n_template']);
 
-//                    $this->k5n->to = array($mobile);
-//                    $this->k5n->msg = $message;
-//                    $this->k5n->SendSMS();
+//                    $this->register->to = array($mobile);
+//                    $this->register->msg = $message;
+//                    $this->register->SendSMS();
                 }
 
                 // Return response
