@@ -1,13 +1,19 @@
 <?php
 
 /**
- * WP SMS newsletter class
+ * WP K5N newsletter class
  *
  * @category   class
  * @package    WP_K5N
  * @version    1.0
  */
 class WP_K5N_Newsletter {
+
+    /**
+     * Messages object
+     * @var object
+     */
+    public $msg;
 
     /**
      * Options
@@ -31,15 +37,16 @@ class WP_K5N_Newsletter {
     protected $tb_prefix;
 
     /**
-     * WP SMS subscribe object
+     * WP K5N subscribe object
      *
      * @var string
      */
     public $subscribe;
 
     public function __construct() {
-        global $wpk5n_option, $wpdb, $table_prefix;
+        global $wpk5n_option, $k5nmsg, $wpdb, $table_prefix;
 
+        $this->msg = $k5nmsg;
         $this->options = $wpk5n_option;
         $this->db = $wpdb;
         $this->tb_prefix = $table_prefix;
@@ -85,7 +92,7 @@ class WP_K5N_Newsletter {
         }
 
         $widgetid = $_POST['widgetid'];
-        
+
         // Get widget option
         $get_widget = get_option('widget_wpk5n_subscribe_widget');
         $widget_options = $get_widget[$widgetid];
@@ -106,9 +113,9 @@ class WP_K5N_Newsletter {
         $mobile = trim($_POST['mobile']);
         $group = trim($_POST['group']);
         $type = $_POST['type'];
-        
+
         if (!$widget_options['show_group']) {
-           $group = $widget_options['default_group']; 
+            $group = $widget_options['default_group'];
         }
 
         if (!$name or ! $surname or ! $mobile) {
@@ -172,10 +179,9 @@ class WP_K5N_Newsletter {
                 }
 
                 $key = rand(1000, 9999);
-//                $this->register->to = array($mobile);
-//                $this->register->msg = __('Your activation code', 'wp-k5n') . ': ' . $key;
-//                $this->register->SendSMS();
-
+                $this->register->to = array($mobile);
+                $this->register->msg = __('Twój kod aktywacyjny', 'wp-k5n') . ': ' . $key;
+                $this->register->send();
                 // Add subscribe to database
                 $result = $this->subscribe->add_subscriber($name, $surname, $mobile, $group, '0', $key);
 
@@ -218,9 +224,9 @@ class WP_K5N_Newsletter {
 
                     $message = str_replace(array_keys($template_vars), array_values($template_vars), $widget_options['welcome_sms_template']);
 
-//                    $this->register->to = array($mobile);
-//                    $this->register->msg = $message;
-//                    $this->register->SendSMS();
+                    $this->msg->to = array($mobile);
+                    $this->msg->msg = $message;
+                    $this->msg->send();
                 }
 
                 // Return response
