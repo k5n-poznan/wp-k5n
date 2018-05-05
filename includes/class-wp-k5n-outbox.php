@@ -144,7 +144,7 @@ class WP_K5N_Outbox_List_Table extends WP_List_Table {
         /**
          * First, lets decide how many records per page to show
          */
-        $per_page = 50;
+        $per_page = 15;
 
         /**
          * REQUIRED. Now we need to define our column headers. This includes a complete
