@@ -206,6 +206,7 @@ class WP_K5N_Plugin {
             'includes/class-wp-k5n-subscribers',
             'includes/class-wp-k5n-newsletter',
             'includes/class-wp-k5n-subscribe-widget',
+            'includes/class-wp-k5n-rest-api',
         );
 
         foreach ($files as $file) {
