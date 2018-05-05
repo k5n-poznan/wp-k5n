@@ -175,8 +175,8 @@ class WP_K5N_Settings {
      */
     public function get_registered_settings() {
         $options = array(
-            'enable' => __('Enable', 'wp-k5n'),
-            'disable' => __('Disable', 'wp-k5n')
+            'enable' => __('Włączone', 'wp-k5n'),
+            'disable' => __('Wyłączone', 'wp-k5n')
         );
 
         $settings = apply_filters('wp_k5n_registered_settings', array(
@@ -219,6 +219,44 @@ class WP_K5N_Settings {
                     'type' => 'checkbox',
                     'options' => $options,
                     'desc' => __('Add WP-K5N endpoints to the WP Rest API', 'wp-k5n')
+                ),
+                'layout_title' => array(
+                    'id' => 'layout_title',
+                    'name' => __('Wyświetlanie', 'wp-k5n'),
+                    'type' => 'header'
+                ),
+                'subscribers_page_size' => array(
+                    'id' => 'subscribers_page_size',
+                    'name' => __('Subscrypcje (ilość)', 'wp-k5n'),
+                    'type' => 'number',
+                    'desc' => __('Wyświetlana ilośc subscrybentów na stronę', 'wp-k5n'),
+                    'size' => '4',
+                    'min' => '10',
+                    'std' => '15',
+                    'options' => array(
+                    ),
+                ),
+                'groups_page_size' => array(
+                    'id' => 'groups_page_size',
+                    'name' => __('Grupy (ilość)', 'wp-k5n'),
+                    'type' => 'number',
+                    'desc' => __('Wyświetlana ilośc grup na stronę', 'wp-k5n'),
+                    'size' => '4',
+                    'min' => '10',
+                    'std' => '15',
+                    'options' => array(
+                    ),
+                ),
+                'outbox_page_size' => array(
+                    'id' => 'outbox_page_size',
+                    'name' => __('Powiadomienia (ilość)', 'wp-k5n'),
+                    'type' => 'number',
+                    'desc' => __('Wyświetlana ilośc powiadomień na stronę', 'wp-k5n'),
+                    'size' => '4',
+                    'min' => '10',
+                    'std' => '15',
+                    'options' => array(
+                    ),
                 ),
             )),
             // Notifications tab

@@ -7,9 +7,13 @@ if (!class_exists('WP_List_Table')) {
 class WP_K5N_Subscribers_List_Table extends WP_List_Table {
 
     var $data;
+    protected $option;
+    
 
     function __construct() {
-        global $status, $page, $wpdb, $table_prefix;
+        global $status, $page, $wpk5n_option, $wpdb, $table_prefix;
+
+        $this->option = $wpk5n_option;
 
         //Set parent defaults
         parent::__construct(array(
@@ -141,7 +145,7 @@ class WP_K5N_Subscribers_List_Table extends WP_List_Table {
         /**
          * First, lets decide how many records per page to show
          */
-        $per_page = 50;
+        $per_page = isset($this->option['subscribers_page_size']) ? $this->option['subscribers_page_size'] : '15';
 
         /**
          * REQUIRED. Now we need to define our column headers. This includes a complete
